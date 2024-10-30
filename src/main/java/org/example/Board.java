@@ -52,4 +52,15 @@ public class Board {
         this.turn = turn;
         this.river = river;
     }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "playerOne='" + playerOne + '\'' +
+                ", playerTwo='" + playerTwo + '\'' +
+                ", flop='" + flop + '\'' +
+                ", turn='" + turn + '\'' +
+                ", river='" + river + '\'' +
+                '}';
+    }
 }
