@@ -1,10 +1,28 @@
 package org.example;
 
+/**
+ * Покерный стол
+ */
 public class Board {
+    /**
+     * Две карты первого игрока
+     */
     private final String playerOne;
+    /**
+     * Две карты второго игрока
+     */
     private final String playerTwo;
+    /**
+     * Три карты, открываются после раздачи карт игрокам
+     */
     private final String flop;
+    /**
+     * Одна карта, открывается после flop
+     */
     private final String turn;
+    /**
+     * Одна карта, открывается после turn
+     */
     private final String river;
 
     public String getPlayerOne() {

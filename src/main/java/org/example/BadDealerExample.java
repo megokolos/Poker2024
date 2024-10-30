@@ -16,7 +16,7 @@ public class BadDealerExample implements Dealer {
 
     @Override
     public Board dealTurn(Board board) {
-        return new Board("2C2H", "2C2H", "2C2H2C", "2C",  null);
+        return new Board("2C2H", "2C2H", "2C2H2C", "2C", null);
     }
 
     @Override

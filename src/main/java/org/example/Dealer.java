@@ -1,7 +1,7 @@
 package org.example;
 
 /**
- * Раздает карты по правилами Техасского Холдема
+ * Проводит игру по правилам Техасского Холдема
  */
 public interface Dealer {
 
@@ -26,7 +26,8 @@ public interface Dealer {
     Board dealRiver(Board board);
 
     /**
-     * пределяет результат на готовой доске
+     * Определяет результат на готовой доске
+     *
      * @throws InvalidPokerBoardException в случае отсутствия/некорректности каких-либо карт
      */
     PokerResult decideWinner(Board board) throws InvalidPokerBoardException;
