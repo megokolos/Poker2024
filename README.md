@@ -28,8 +28,9 @@ Cоздать свою реализацию [Dealer](src%2Fmain%2Fjava%2Forg%2Fe
 ## FAQ
 #### Что, если я не знаю Java?
 Начни с установки Intelij Idea и JDK. В данном случае тебе понадобится JDK 17 версии:  
-- Intelij Idea Community Edition [отсюда](https://www.jetbrains.com/help/idea/installation-guide.html#silent)  
-- [Скачать JDK](https://jdk.java.net/java-se-ri/17-MR1), засетапить все необходимое [видео](https://www.youtube.com/watch?v=0OrVOHB42C4) (есть русские субтитры), [текст](https://www.freecodecamp.org/news/how-to-set-up-java-development-environment-a-comprehensive-guide/)
+- Intelij Idea **Community Edition** [отсюда](https://www.jetbrains.com/toolbox-app/),  надеюсь ты умеешь обходить блокировки, иначе в разработку нынче путь заказан
+- В Intelij Idea File-> Project Structure -> SDK -> Download SDK -> 17 -> Amazon Coretto
+- Еще можно [Скачать JDK](https://jdk.java.net/java-se-ri/17-MR1) тут, засетапить все необходимое [видео](https://www.youtube.com/watch?v=0OrVOHB42C4) (есть русские субтитры), [текст](https://www.freecodecamp.org/news/how-to-set-up-java-development-environment-a-comprehensive-guide/)
 
 #### Я не умею работать с Git и GitHub  
 Если ты не знаком с Git и Github, то тебе нужно ознакомиться с этой [статьей](http://maxsite.org/page/how-to-put-your-project-on-github-com), в ней описаны основы работы с Git.  
