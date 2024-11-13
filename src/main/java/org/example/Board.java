@@ -56,11 +56,11 @@ public class Board {
     @Override
     public String toString() {
         return "Board{" +
-                "playerOne='" + playerOne + '\'' +
-                ", playerTwo='" + playerTwo + '\'' +
-                ", flop='" + flop + '\'' +
-                ", turn='" + turn + '\'' +
-                ", river='" + river + '\'' +
+                "playerOne=\"" + playerOne + '\"' +
+                ", playerTwo=\"" + playerTwo + '\"' +
+                ", flop=\"" + flop + '\"' +
+                ", turn=\"" + turn + '\"' +
+                ", river=\"" + river + '\"' +
                 '}';
     }
 }
