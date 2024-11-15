@@ -692,7 +692,7 @@ public class PokerGame {
 
 
 
-
+    //Проверка на кикер не нужна
     public static boolean FlashRoyal(int[] ranks, String[] suits){
 
         Map<String, List<Integer>> suitToRanks = new HashMap<>();
@@ -719,7 +719,8 @@ public class PokerGame {
         return false;
     }
 
-    public static boolean StreetFlash(int[] ranks, String[] suits){
+    //Проверка на кикер не нужна
+    public static int StreetFlash(int[] ranks, String[] suits){
 
         Map<String, List<Integer>> suitToRanks = new HashMap<>();
 
@@ -738,43 +739,54 @@ public class PokerGame {
             suitRanks.sort(Integer::compareTo);
 
 
-            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(10, 11, 12, 13, 14)) ||
-                    suitRanks.containsAll(Arrays.asList(9, 10, 11, 12, 13)) ||
-                    suitRanks.containsAll(Arrays.asList(8, 9, 10, 11, 12)) ||
-                    suitRanks.containsAll(Arrays.asList(7, 8, 9, 10, 11)) ||
-                    suitRanks.containsAll(Arrays.asList(6, 7, 8, 9, 10)) ||
-                    suitRanks.containsAll(Arrays.asList(5, 6, 7, 8, 9)) ||
-                    suitRanks.containsAll(Arrays.asList(4, 5, 6, 7, 8)) ||
-                    suitRanks.containsAll(Arrays.asList(3, 4, 5, 6, 7)) ||
-                    suitRanks.containsAll(Arrays.asList(2, 3, 4, 5, 6))))
-            {
-                return true;
-            }
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(10, 11, 12, 13, 14))))
+                return 14;
+
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(9, 10, 11, 12, 13))))
+                return 13;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(8, 9, 10, 11, 12))))
+                return 12;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(7, 8, 9, 10, 11))))
+                return 11;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(6, 7, 8, 9, 10))))
+                return 10;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(5, 6, 7, 8, 9))))
+                return 9;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(4, 5, 6, 7, 8))))
+                return 8;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(3, 4, 5, 6, 7))))
+                return 7;
+            if (suitRanks.size() >= 5 && (suitRanks.containsAll(Arrays.asList(2, 3, 4, 5, 6))))
+                return 6;
+
+
+
         }
-        return false;
+        return 0;
     }
 
-
-    public static boolean FourOfAKind(int[] ranks){
-
+    //Проверка на кикер нужна
+    public static int FourOfAKind(int[] ranks){
+        
         int[] countRanks = new int[15];
 
         for(int i =0; i <ranks.length; i++){
             countRanks[ranks[i]]+=1;
         }
 
-        for(int i : countRanks){
-            if(i==4)
-                return true;
+        for(int i=0; i<countRanks.length;i++){
+            if(countRanks[i]==4)
+                return i;
         }
 
-    return false;
+    return 0;
     }
 
-
-    public static boolean FullHouse(int[] ranks){
+    //Проверка на кикер не нужна
+    public static int FullHouse(int[] ranks){
 
         int[] countRanks = new int[15];
+        int response=0;
 
         for(int i =0; i <ranks.length; i++){
             countRanks[ranks[i]]+=1;
@@ -782,41 +794,50 @@ public class PokerGame {
         int two=0;
         int three=0;
         for(int i =0; i<countRanks.length;i++){
-            if(countRanks[i]==2)
+            if(countRanks[i]==2) {
                 two++;
+                response+=i;
+            }
 
-            if (countRanks[i]==3)
+            if (countRanks[i]==3) {
                 three++;
+                response+=i;
+            }
         }
+        if(three!=0 && two!=0)
+            return response;
 
-        return two != 0 && three != 0;
+
+        return 0;
     }
 
+    //Проверка на кикер не нужна
+    public static int Flash(int[] ranks, String[] suits) {
 
-    public static boolean Flash(String[] suits){
+        Arrays.sort(ranks);
 
         int[] counter = new int[4];
 
-        for (int i =0; i<suits.length; i++){
-            if(suits[i]=="C")
-                counter[0]+=1;
-            else if (suits[i]=="D")
-                counter[1]+=1;
-            else if(suits[i]=="H")
-                counter[2]+=1;
+        for (int i = 0; i < suits.length; i++) {
+            if (suits[i] == "C")
+                counter[0] += 1;
+            else if (suits[i] == "D")
+                counter[1] += 1;
+            else if (suits[i] == "H")
+                counter[2] += 1;
             else
-                counter[3]=+1;
+                counter[3] = +1;
         }
-        for (int i : counter){
-            if(i==5)
-                return true;
+        for (int i : counter) {
+            if (i == 5)
+                return ranks[ranks.length - 1];
         }
 
-        return false;
+        return 0;
     }
 
-
-    public static boolean Street(int[] ranks){
+    //Проверка на кикер не нужна
+    public static int Street(int[] ranks){
 
         Arrays.sort(ranks);
 
@@ -826,24 +847,35 @@ public class PokerGame {
             listOfRanks.add(i);
         }
 
-        if(listOfRanks.containsAll(Arrays.asList(10, 11, 12, 13, 14)) ||
-                listOfRanks.containsAll(Arrays.asList(9, 10, 11, 12, 13)) ||
-                listOfRanks.containsAll(Arrays.asList(8, 9, 10, 11, 12)) ||
-                listOfRanks.containsAll(Arrays.asList(7, 8, 9, 10, 11)) ||
-                listOfRanks.containsAll(Arrays.asList(6, 7, 8, 9, 10)) ||
-                listOfRanks.containsAll(Arrays.asList(5, 6, 7, 8, 9)) ||
-                listOfRanks.containsAll(Arrays.asList(4, 5, 6, 7, 8)) ||
-                listOfRanks.containsAll(Arrays.asList(3, 4, 5, 6, 7)) ||
-                listOfRanks.containsAll(Arrays.asList(2, 3, 4, 5, 6))) {
 
-            return true;
-        }
 
-        return false;
+        if (listOfRanks.containsAll(Arrays.asList(10, 11, 12, 13, 14)))
+            return 14;
+
+        if (listOfRanks.containsAll(Arrays.asList(9, 10, 11, 12, 13)))
+            return 13;
+        if (listOfRanks.containsAll(Arrays.asList(8, 9, 10, 11, 12)))
+            return 12;
+        if (listOfRanks.containsAll(Arrays.asList(7, 8, 9, 10, 11)))
+            return 11;
+        if (listOfRanks.containsAll(Arrays.asList(6, 7, 8, 9, 10)))
+            return 10;
+        if (listOfRanks.containsAll(Arrays.asList(5, 6, 7, 8, 9)))
+            return 9;
+        if (listOfRanks.containsAll(Arrays.asList(4, 5, 6, 7, 8)))
+            return 8;
+        if (listOfRanks.containsAll(Arrays.asList(3, 4, 5, 6, 7)))
+            return 7;
+        if (listOfRanks.containsAll(Arrays.asList(2, 3, 4, 5, 6)))
+            return 6;
+
+        return 0;
     }
 
-    public static boolean Set(int[] ranks){
+    //Проверка на кикер нужна
+    public static int Set(int[] ranks){
 
+        
         int[] countRanks = new int[15];
 
         for(int i =0; i <ranks.length; i++){
@@ -852,14 +884,16 @@ public class PokerGame {
 
         for(int i =0; i<countRanks.length;i++){
             if (countRanks[i]==3)
-                return true;
+                return i;
         }
 
-        return false;
+        return 0;
     }
 
-    public static boolean TwoPairs(int[] ranks){
+    //Проверка на кикер нужна
+    public static int TwoPairs(int[] ranks){
 
+        int response=0;
         int[] countRanks = new int[15];
 
         for(int i =0; i <ranks.length; i++){
@@ -869,19 +903,23 @@ public class PokerGame {
         int counter=0;
 
         for(int i =0; i<countRanks.length;i++){
-            if (countRanks[i]==2)
+            if (countRanks[i]==2) {
                 counter++;
+                response+=i;
+            }
 
             if(counter==2)
-                return true;
+                return response;
 
         }
 
-        return false;
+        return 0;
     }
 
-    public static boolean Pair(int[] ranks){
+    //Проверка на кикер нужна
+    public static int Pair(int[] ranks){
 
+        
         int[] countRanks = new int[15];
 
         for(int i =0; i <ranks.length; i++){
@@ -890,13 +928,13 @@ public class PokerGame {
 
         for(int i =0; i<countRanks.length;i++){
             if (countRanks[i]==2)
-                return true;
+                return i;
         }
 
-        return false;
+        return 0;
     }
 
-
+   // Это и есть кикер
     public static int ElderRank(int[] ranks){
 
         Arrays.sort(ranks);
@@ -914,76 +952,131 @@ public class PokerGame {
         else if (FlashRoyal(ranks2,suits2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (StreetFlash(ranks1,suits1) && StreetFlash(ranks2,suits2)) {
+        else if (StreetFlash(ranks1,suits1)!=0 && StreetFlash(ranks2,suits2)!=0 && StreetFlash(ranks1,suits1)==StreetFlash(ranks2,suits2)) {
             return PokerResult.DRAW;
         }
-        else if (StreetFlash(ranks1,suits1)) {
+        else if (StreetFlash(ranks1,suits1)!=0 && StreetFlash(ranks2,suits2)==0) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (StreetFlash(ranks2,suits2)) {
+        else if (StreetFlash(ranks1,suits1)==0 && StreetFlash(ranks2,suits2)!=0) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (FourOfAKind(ranks1) && FourOfAKind(ranks2)) {
+        else if (FourOfAKind(ranks1)!=0 && FourOfAKind(ranks2)!=0 && FourOfAKind(ranks1)==FourOfAKind(ranks2)) {
+            Arrays.sort(ranks1);
+            Arrays.sort(ranks2);
+            
+            if(ranks1[ranks1.length-1]==ranks2[ranks2.length-1])
             return PokerResult.DRAW;
+            else if(ranks1[ranks1.length-1]>ranks2[ranks2.length-1])
+                return PokerResult.PLAYER_ONE_WIN;
+            else 
+                return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (FourOfAKind(ranks1)) {
+        else if (FourOfAKind(ranks1)!=0 && FourOfAKind(ranks2)==0) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (FourOfAKind(ranks2)) {
+        else if (FourOfAKind(ranks1)==0 && FourOfAKind(ranks2)!=0) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (FullHouse(ranks1) && FullHouse(ranks2)) {
+        else if (FullHouse(ranks1) == FullHouse(ranks2) && FullHouse(ranks1) !=0 && FullHouse(ranks2)!=0) {
             return PokerResult.DRAW;
         }
-        else if (FullHouse(ranks1)) {
+        else if (FullHouse(ranks1) > FullHouse(ranks2)) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (FullHouse(ranks2)) {
+        else if (FullHouse(ranks1) < FullHouse(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (Flash(suits1) && Flash(suits2)) {
+        else if (Flash(ranks1,suits1) == Flash(ranks2,suits2) && Flash(ranks1,suits1)!=0 &&  Flash(ranks2,suits2)!=0) {
             return PokerResult.DRAW;
         }
-        else if (Flash(suits1)) {
+        else if (Flash(ranks1,suits1) > Flash(ranks2,suits2)) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (Flash(suits2)) {
+        else if (Flash(ranks1,suits1) < Flash(ranks2,suits2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (Street(ranks1) && Street(ranks2)) {
+        else if (Street(ranks1) == Street(ranks2) && Street(ranks1)!=0 && Street(ranks2)!=0) {
             return PokerResult.DRAW;
         }
-        else if (Street(ranks1)){
+        else if (Street(ranks1)>Street(ranks2)){
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (Street(ranks2)) {
+        else if (Street(ranks1)<Street(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (Set(ranks1) && Set(ranks2)) {
-            return PokerResult.DRAW;
+        else if (Set(ranks1) == Set(ranks2) && Set(ranks1)!=0 && Set(ranks2)!=0) {
+            Arrays.sort(ranks1);
+            Arrays.sort(ranks2);
+            if(ranks1[ranks1.length-1]==ranks2[ranks2.length-1]) {
+                if(ranks1[ranks1.length-2]==ranks2[ranks2.length-2])
+                return PokerResult.DRAW;
+                else if (ranks1[ranks1.length-2]>ranks2[ranks2.length-2]) {
+                    return PokerResult.PLAYER_ONE_WIN;
+                }
+                    else
+                        return PokerResult.PLAYER_TWO_WIN;
+                    
+
+            }
+            
         }
-        else if (Set(ranks1)) {
+        else if (Set(ranks1) > Set(ranks2)) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (Set(ranks2)) {
+        else if (Set(ranks1) < Set(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (TwoPairs(ranks1) && TwoPairs(ranks2)) {
+        else if (TwoPairs(ranks1) == TwoPairs(ranks2) && TwoPairs(ranks1) !=0 && TwoPairs(ranks2) !=0 ) {
+            Arrays.sort(ranks1);
+            Arrays.sort(ranks2);
+            if(ranks1[ranks1.length-1]==ranks2[ranks2.length-1])
             return PokerResult.DRAW;
+            else if (ranks1[ranks1.length-1]>=ranks2[ranks2.length-1])
+                return PokerResult.PLAYER_ONE_WIN;
+            else
+                return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (TwoPairs(ranks1)) {
+        else if (TwoPairs(ranks1)>TwoPairs(ranks2)) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (TwoPairs(ranks2)) {
+        else if (TwoPairs(ranks1)<TwoPairs(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
-        else if (Pair(ranks1) && Pair(ranks2)) {
-            return PokerResult.DRAW;
+        else if (Pair(ranks1) == Pair(ranks2) && Pair(ranks1) !=0 && Pair(ranks2)!=0) {
+            Arrays.sort(ranks1);
+            Arrays.sort(ranks2);
+
+            if(ranks1[ranks1.length-1]>ranks2[ranks2.length-1]){
+                return PokerResult.PLAYER_ONE_WIN;
+                }
+            else if(ranks1[ranks1.length-1]<ranks2[ranks2.length-1]){
+                return PokerResult.PLAYER_TWO_WIN;
+            }
+            else if(ranks1[ranks1.length-1]==ranks2[ranks2.length-1]){
+                if(ranks1[ranks1.length-2]>ranks2[ranks2.length-2]){
+                    return PokerResult.PLAYER_ONE_WIN;
+                }
+                else if(ranks1[ranks1.length-2]<ranks2[ranks2.length-2]){
+                    return PokerResult.PLAYER_TWO_WIN;
+                }
+                else if(ranks1[ranks1.length-2]==ranks2[ranks2.length-2]){
+                    if(ranks1[ranks1.length-3]>ranks2[ranks2.length-3]){
+                        return PokerResult.PLAYER_ONE_WIN;
+                    }
+                    else if(ranks1[ranks1.length-3]<ranks2[ranks2.length-3]){
+                        return PokerResult.PLAYER_TWO_WIN;
+                    }
+                    else if (ranks1[ranks1.length-3]<ranks2[ranks2.length-3])
+                        return PokerResult.DRAW;
+                }
+            }
+
         }
-        else if (Pair(ranks1)) {
+        else if (Pair(ranks1) > Pair(ranks2)) {
             return PokerResult.PLAYER_ONE_WIN;
         }
-        else if (Pair(ranks2)) {
+        else if (Pair(ranks1) < Pair(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
         }
         else if (ElderRank(ranks1)==ElderRank(ranks2)) {
@@ -997,7 +1090,7 @@ public class PokerGame {
         }
 
 
-
+        return PokerResult.DRAW;
     }
 
 }
