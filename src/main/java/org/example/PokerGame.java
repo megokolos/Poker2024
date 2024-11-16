@@ -931,10 +931,10 @@ public class PokerGame {
     }
 
     // Это и есть кикер
-    public static int ElderRank(int[] ranks) {
-
+    public static int[] ElderRank(int[] ranks) {
         Arrays.sort(ranks);
-        return ranks[ranks.length - 1];
+
+        return ranks;
     }
 
     //Проверка на кикер
@@ -1196,12 +1196,19 @@ public class PokerGame {
             return PokerResult.PLAYER_ONE_WIN;
         } else if (Pair(ranks1) < Pair(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
-        } else if (ElderRank(ranks1) == ElderRank(ranks2)) {
-            return PokerResult.DRAW;
-        } else if (ElderRank(ranks1) > ElderRank(ranks2)) {
-            return PokerResult.PLAYER_ONE_WIN;
         } else {
-            return PokerResult.PLAYER_TWO_WIN;
+            int[] sortedarray1 = ElderRank(ranks1);
+            int[] sortedarray2 = ElderRank(ranks2);
+
+            for (int i=sortedarray1.length-1; i>1;i--){
+                if(sortedarray1[i]==sortedarray2[i])
+                    continue;
+                else if (sortedarray1[i]>sortedarray2[i])
+                    return PokerResult.PLAYER_ONE_WIN;
+                else
+                    return PokerResult.PLAYER_TWO_WIN;
+            }
+
         }
 
 
