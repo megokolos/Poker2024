@@ -793,12 +793,12 @@ public class PokerGame {
         for (int i = 0; i < countRanks.length; i++) {
             if (countRanks[i] == 2) {
                 two++;
-                response += i;
+                response += i*2;
             }
 
             if (countRanks[i] == 3) {
                 three++;
-                response += i;
+                response += i*3;
             }
         }
         if (three != 0 && two != 0)
