@@ -88,15 +88,15 @@ public class PokerGame {
             allCardsInGame.add(board.getRiver());
 
 
-            System.out.println(firstPlayer1Card);
-            System.out.println(firstPlayer2Card);
-            System.out.println(secondPlayer1Card);
-            System.out.println(secondPlayer2Card);
-            System.out.println(flop1);
-            System.out.println(flop2);
-            System.out.println(flop3);
-            System.out.println(board.getTurn());
-            System.out.println(board.getRiver());
+//            System.out.println(firstPlayer1Card);
+//            System.out.println(firstPlayer2Card);
+//            System.out.println(secondPlayer1Card);
+//            System.out.println(secondPlayer2Card);
+//            System.out.println(flop1);
+//            System.out.println(flop2);
+//            System.out.println(flop3);
+//            System.out.println(board.getTurn());
+//            System.out.println(board.getRiver());
 
             for (int i = 0; i < allCardsInGame.size() - 1; i++) {
                 for (int j = i + 1; j < allCardsInGame.size(); j++) {
