@@ -97,6 +97,9 @@ public class PokerGame {
 //            System.out.println(flop3);
 //            System.out.println(board.getTurn());
 //            System.out.println(board.getRiver());
+            System.out.println();
+            System.out.println(board.toString());
+            System.out.println();
 
             for (int i = 0; i < allCardsInGame.size() - 1; i++) {
                 for (int j = i + 1; j < allCardsInGame.size(); j++) {
@@ -114,7 +117,7 @@ public class PokerGame {
             }
 
 
-            System.out.println(board.toString());
+
 
 
             //Надо реализвать проверку комбинаций, идем от старшей к нижней
