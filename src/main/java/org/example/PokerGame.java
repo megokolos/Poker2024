@@ -117,9 +117,6 @@ public class PokerGame {
             }
 
 
-
-
-
             //Надо реализвать проверку комбинаций, идем от старшей к нижней
 
 
@@ -793,12 +790,12 @@ public class PokerGame {
         for (int i = 0; i < countRanks.length; i++) {
             if (countRanks[i] == 2) {
                 two++;
-                response += i*2;
+                response += i * 2;
             }
 
             if (countRanks[i] == 3) {
                 three++;
-                response += i*3;
+                response += i * 3;
             }
         }
         if (three != 0 && two != 0)
@@ -887,29 +884,30 @@ public class PokerGame {
     }
 
     //Проверка на кикер нужна
-    public static int TwoPairs(int[] ranks) {
+    public static int[] TwoPairs(int[] ranks) {
 
-        int response = 0;
+
         int[] countRanks = new int[15];
+
+        int[] response = new int[2];
 
         for (int i = 0; i < ranks.length; i++) {
             countRanks[ranks[i]] += 1;
         }
 
-        int counter = 0;
+        List<Integer> list = new ArrayList<>();
 
-        for (int i = 0; i < countRanks.length; i++) {
+        for (int i = countRanks.length - 1; i > 0; i--) {
             if (countRanks[i] == 2) {
-                counter++;
-                response += i;
+                list.add(i);
             }
-
-            if (counter >= 2)
-                return response;
-
         }
-
-        return 0;
+        Collections.sort(list);
+        if (list.size() >= 2) {
+            response[0] = list.get(list.size() - 1);
+            response[1] = list.get(list.size() - 2);
+        }
+        return response;
     }
 
     //Проверка на кикер нужна
@@ -1009,17 +1007,16 @@ public class PokerGame {
             if (kiker1 == kiker2) {
 
                 List<Integer> list1 = new ArrayList<>();
-                for(int i=0; i <ranks1.length; i++){
-                    if(ranks1[i]!=kiker1)
-                    list1.add(ranks1[i]);
+                for (int i = 0; i < ranks1.length; i++) {
+                    if (ranks1[i] != kiker1)
+                        list1.add(ranks1[i]);
                 }
 
 
-
                 List<Integer> list2 = new ArrayList<>();
-                for(int i=0; i <ranks2.length; i++){
-                    if(ranks2[i]!=kiker2)
-                    list2.add(ranks2[i]);
+                for (int i = 0; i < ranks2.length; i++) {
+                    if (ranks2[i] != kiker2)
+                        list2.add(ranks2[i]);
                 }
 
 
@@ -1045,18 +1042,27 @@ public class PokerGame {
             return PokerResult.PLAYER_ONE_WIN;
         } else if (Set(ranks1) < Set(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1) == TwoPairs(ranks2) && TwoPairs(ranks1) != 0 && TwoPairs(ranks2) != 0) {
+        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
+                TwoPairs(ranks1)[1] == TwoPairs(ranks2)[1] &&
+                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
+                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
 
 
             List<Integer> list1 = new ArrayList<>();
-            for(int i=0; i <ranks1.length; i++){
+            for (int i = 0; i < ranks1.length; i++) {
                 list1.add(ranks1[i]);
             }
 
-            for(int i =0; i<ranks1.length-1;i++){
-                for(int k =i+1; k<ranks1.length;k++){
-                    if(ranks1[i]+ranks1[k]==TwoPairs(ranks1)){
+            for (int i = 0; i < ranks1.length - 1; i++) {
+                for (int k = i + 1; k < ranks1.length; k++) {
+                    if (ranks1[i] == TwoPairs(ranks1)[0]) {
                         list1.remove((Integer) ranks1[i]);
+
+
+                        break;
+                    }
+                    if (ranks1[k] == TwoPairs(ranks1)[1]) {
+
                         list1.remove((Integer) ranks1[k]);
 
                         break;
@@ -1069,19 +1075,27 @@ public class PokerGame {
 
 
             List<Integer> list2 = new ArrayList<>();
-            for(int i=0; i <ranks2.length; i++){
+            for (int i = 0; i < ranks2.length; i++) {
                 list2.add(ranks2[i]);
             }
+            for (int i = 0; i < ranks2.length - 1; i++) {
+                for (int k = i + 1; k < ranks2.length; k++) {
+                    if (ranks2[i] == TwoPairs(ranks2)[0]) {
+                        list2.remove((Integer) ranks2[i]);
 
-            for(int i =0; i<ranks2.length-1;i++){
-                for(int k =i+1; k<ranks2.length;k++){
-                    if(ranks2[i]+ranks2[k]==TwoPairs(ranks2)){
-                        list2.remove(ranks2[i]);
-                        list2.remove(ranks2[k]);
+
+                        break;
+                    }
+                    if (ranks2[k] == TwoPairs(ranks2)[1]) {
+
+                        list2.remove((Integer) ranks2[k]);
+
                         break;
                     }
                 }
             }
+
+
             int[] withoutpairs2 = list2.stream()
                     .mapToInt(Integer::intValue)
                     .toArray();
@@ -1090,15 +1104,25 @@ public class PokerGame {
             Arrays.sort(withoutpairs2);
 
 
-            if (withoutpairs1[withoutpairs1.length-1] == withoutpairs2[withoutpairs2.length-1])
+            if (withoutpairs1[withoutpairs1.length - 1] == withoutpairs2[withoutpairs2.length - 1])
                 return PokerResult.DRAW;
-            else if (withoutpairs1[withoutpairs1.length-1] > withoutpairs2[withoutpairs2.length-1])
+            else if (withoutpairs1[withoutpairs1.length - 1] > withoutpairs2[withoutpairs2.length - 1])
                 return PokerResult.PLAYER_ONE_WIN;
             else
                 return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1) > TwoPairs(ranks2)) {
+        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
+                TwoPairs(ranks1)[1] > TwoPairs(ranks2)[1] &&
+                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
+                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_ONE_WIN;
-        } else if (TwoPairs(ranks1) < TwoPairs(ranks2)) {
+        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
+                TwoPairs(ranks1)[1] < TwoPairs(ranks2)[1] &&
+                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
+                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
+            return PokerResult.PLAYER_TWO_WIN;
+        } else if (TwoPairs(ranks1)[0] > TwoPairs(ranks2)[0] && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
+            return PokerResult.PLAYER_ONE_WIN;
+        } else if (TwoPairs(ranks1)[0] < TwoPairs(ranks2)[0] && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
         } else if (Pair(ranks1) == Pair(ranks2) && Pair(ranks1) != 0 && Pair(ranks2) != 0) {
 
@@ -1109,16 +1133,16 @@ public class PokerGame {
             if (kiker1 == kiker2) {
 
                 List<Integer> list11 = new ArrayList<>();
-                for(int i=0; i <ranks1.length; i++){
-                    if(ranks1[i]!=kiker1)
-                    list11.add(ranks1[i]);
+                for (int i = 0; i < ranks1.length; i++) {
+                    if (ranks1[i] != kiker1)
+                        list11.add(ranks1[i]);
                 }
 
 
                 List<Integer> list22 = new ArrayList<>();
-                for(int i=0; i <ranks2.length; i++){
-                    if(ranks2[i]!=kiker2)
-                    list22.add(ranks2[i]);
+                for (int i = 0; i < ranks2.length; i++) {
+                    if (ranks2[i] != kiker2)
+                        list22.add(ranks2[i]);
                 }
 
 
@@ -1133,41 +1157,37 @@ public class PokerGame {
                 if (determineKicker(withoutkiker1, Pair(ranks1)) == determineKicker(withoutkiker2, Pair(ranks2))) {
 
 
-
                     int kiker21 = determineKicker(withoutkiker1, Pair(ranks1));
                     int kiker22 = determineKicker(withoutkiker2, Pair(ranks2));
-
-
 
 
                     if (kiker21 == kiker22) {
 
                         List<Integer> listpair1 = new ArrayList<>();
                         for (int i = 0; i < withoutkiker1.length; i++) {
-                            if(withoutkiker1[i]!=kiker21)
-                            listpair1.add(withoutkiker1[i]);
+                            if (withoutkiker1[i] != kiker21)
+                                listpair1.add(withoutkiker1[i]);
                         }
 
 
                         List<Integer> listpair2 = new ArrayList<>();
                         for (int i = 0; i < withoutkiker2.length; i++) {
-                            if(withoutkiker2[i]!=kiker22)
-                            listpair2.add(withoutkiker2[i]);
+                            if (withoutkiker2[i] != kiker22)
+                                listpair2.add(withoutkiker2[i]);
                         }
 
 
-                        int[] withoutkiker21 = list11.stream()
+                        int[] withoutkiker21 = listpair1.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
 
-                        int[] withoutkiker22 = list22.stream()
+                        int[] withoutkiker22 = listpair2.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
 
-                        if(determineKicker(withoutkiker21,Pair(ranks1))==determineKicker(withoutkiker22,Pair(ranks2))){
+                        if (determineKicker(withoutkiker21, Pair(ranks1)) == determineKicker(withoutkiker22, Pair(ranks2))) {
                             return PokerResult.DRAW;
-                            }
-                        else if (determineKicker(withoutkiker21,Pair(ranks1))>determineKicker(withoutkiker22,Pair(ranks2)))
+                        } else if (determineKicker(withoutkiker21, Pair(ranks1)) > determineKicker(withoutkiker22, Pair(ranks2)))
                             return PokerResult.PLAYER_ONE_WIN;
                         else
                             return PokerResult.PLAYER_TWO_WIN;
@@ -1179,17 +1199,15 @@ public class PokerGame {
                         return PokerResult.PLAYER_TWO_WIN;
 
 
-                }
-                else if (determineKicker(withoutkiker1, Pair(ranks1)) > determineKicker(withoutkiker2, Pair(ranks2))) {
+                } else if (determineKicker(withoutkiker1, Pair(ranks1)) > determineKicker(withoutkiker2, Pair(ranks2))) {
                     return PokerResult.PLAYER_ONE_WIN;
                 } else
                     return PokerResult.PLAYER_TWO_WIN;
 
 
-            } else if (kiker1>kiker2) {
+            } else if (kiker1 > kiker2) {
                 return PokerResult.PLAYER_ONE_WIN;
-            }
-            else
+            } else
                 return PokerResult.PLAYER_TWO_WIN;
 
         } else if (Pair(ranks1) > Pair(ranks2)) {
@@ -1200,10 +1218,10 @@ public class PokerGame {
             int[] sortedarray1 = ElderRank(ranks1);
             int[] sortedarray2 = ElderRank(ranks2);
 
-            for (int i=sortedarray1.length-1; i>1;i--){
-                if(sortedarray1[i]==sortedarray2[i])
+            for (int i = sortedarray1.length - 1; i > 1; i--) {
+                if (sortedarray1[i] == sortedarray2[i])
                     continue;
-                else if (sortedarray1[i]>sortedarray2[i])
+                else if (sortedarray1[i] > sortedarray2[i])
                     return PokerResult.PLAYER_ONE_WIN;
                 else
                     return PokerResult.PLAYER_TWO_WIN;
