@@ -829,7 +829,7 @@ public class PokerGame {
                 counter[2] += 1;
                 listH.add(ranks[i]);
             }
-            else {
+            else if (suits[i] == "S"){
                 counter[3] += 1;
                 listS.add(ranks[i]);
             }
@@ -946,7 +946,7 @@ public class PokerGame {
         return 0;
     }
 
-    // Это и есть кикер
+    // Переделал, теперь просто сортируем, так как у нас 5 кикеров
     public static int[] ElderRank(int[] ranks) {
         Arrays.sort(ranks);
 
@@ -1138,9 +1138,9 @@ public class PokerGame {
                 TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
                 TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1)[0] > TwoPairs(ranks2)[0] && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
+        } else if ((TwoPairs(ranks2)[0]==0 || TwoPairs(ranks2)[1]==0) && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
             return PokerResult.PLAYER_ONE_WIN;
-        } else if (TwoPairs(ranks1)[0] < TwoPairs(ranks2)[0] && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
+        } else if ((TwoPairs(ranks1)[0]==0 || TwoPairs(ranks1)[1]==0) && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
         } else if (Pair(ranks1) == Pair(ranks2) && Pair(ranks1) != 0 && Pair(ranks2) != 0) {
 
