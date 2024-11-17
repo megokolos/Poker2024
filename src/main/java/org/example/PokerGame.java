@@ -817,32 +817,28 @@ public class PokerGame {
         int[] counter = new int[4];
 
         for (int i = 0; i < suits.length; i++) {
-            if (suits[i] == "C") {
+            if (suits[i].equals("C")) {
                 counter[0] += 1;
                 listC.add(ranks[i]);
-            }
-            else if (suits[i] == "D") {
+            } else if (suits[i].equals("D")) {
                 counter[1] += 1;
                 listD.add(ranks[i]);
-            }
-            else if (suits[i] == "H") {
+            } else if (suits[i].equals("H")) {
                 counter[2] += 1;
                 listH.add(ranks[i]);
-            }
-            else if (suits[i] == "S"){
+            } else if (suits[i].equals("S")) {
                 counter[3] += 1;
                 listS.add(ranks[i]);
             }
         }
-        for (int i =0; i<counter.length;i++) {
-            if (counter[i] >= 5 && i==0)
-                return Collections.max(listC);
-            if (counter[i] >= 5 && i==1)
-                return Collections.max(listD);
-            if (counter[i] >= 5 && i==2)
-                return Collections.max(listH);
-            if (counter[i] >= 5 && i==3)
-                return Collections.max(listS);
+
+        for (int i = 0; i < counter.length; i++) {
+            if (counter[i] >= 5) {
+                if (i == 0) return Collections.max(listC);
+                if (i == 1) return Collections.max(listD);
+                if (i == 2) return Collections.max(listH);
+                if (i == 3) return Collections.max(listS);
+            }
         }
 
         return 0;
