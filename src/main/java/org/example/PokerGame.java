@@ -808,23 +808,41 @@ public class PokerGame {
     //Проверка на кикер не нужна
     public static int Flash(int[] ranks, String[] suits) {
 
-        Arrays.sort(ranks);
+
+        List<Integer> listC = new ArrayList<>();
+        List<Integer> listD = new ArrayList<>();
+        List<Integer> listH = new ArrayList<>();
+        List<Integer> listS = new ArrayList<>();
 
         int[] counter = new int[4];
 
         for (int i = 0; i < suits.length; i++) {
-            if (suits[i] == "C")
+            if (suits[i] == "C") {
                 counter[0] += 1;
-            else if (suits[i] == "D")
+                listC.add(ranks[i]);
+            }
+            else if (suits[i] == "D") {
                 counter[1] += 1;
-            else if (suits[i] == "H")
+                listD.add(ranks[i]);
+            }
+            else if (suits[i] == "H") {
                 counter[2] += 1;
-            else
-                counter[3] = +1;
+                listH.add(ranks[i]);
+            }
+            else {
+                counter[3] += 1;
+                listS.add(ranks[i]);
+            }
         }
-        for (int i : counter) {
-            if (i == 5)
-                return ranks[ranks.length - 1];
+        for (int i =0; i<counter.length;i++) {
+            if (counter[i] >= 5 && i==0)
+                return Collections.max(listC);
+            if (counter[i] >= 5 && i==1)
+                return Collections.max(listD);
+            if (counter[i] >= 5 && i==2)
+                return Collections.max(listH);
+            if (counter[i] >= 5 && i==3)
+                return Collections.max(listS);
         }
 
         return 0;
