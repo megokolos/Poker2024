@@ -834,28 +834,28 @@ public class PokerGame {
 
         for (int i = 0; i < counter.length; i++) {
             if (counter[i] >= 5) {
-                if (i == 0){
+                if (i == 0) {
                     int[] arrayC = listC.stream()
                             .mapToInt(Integer::intValue)
                             .toArray();
                     Arrays.sort(arrayC);
                     return arrayC;
                 }
-                if (i == 1){
+                if (i == 1) {
                     int[] arrayD = listD.stream()
                             .mapToInt(Integer::intValue)
                             .toArray();
                     Arrays.sort(arrayD);
                     return arrayD;
                 }
-                if (i == 2){
+                if (i == 2) {
                     int[] arrayH = listH.stream()
                             .mapToInt(Integer::intValue)
                             .toArray();
                     Arrays.sort(arrayH);
                     return arrayH;
                 }
-                if (i == 3){
+                if (i == 3) {
                     int[] arrayS = listS.stream()
                             .mapToInt(Integer::intValue)
                             .toArray();
@@ -1028,16 +1028,16 @@ public class PokerGame {
         } else if (Flash(ranks1, suits1).length == Flash(ranks2, suits2).length &&
                 Flash(ranks1, suits1).length != 0 && Flash(ranks2, suits2).length != 0) {
 
-            for(int counter =0;counter<5;counter++){
-                if(Flash(ranks1, suits1)[Flash(ranks1, suits1).length-1-counter]>Flash(ranks2, suits2)[Flash(ranks2, suits2).length-1-counter])
+            for (int counter = 0; counter < 5; counter++) {
+                if (Flash(ranks1, suits1)[Flash(ranks1, suits1).length - 1 - counter] > Flash(ranks2, suits2)[Flash(ranks2, suits2).length - 1 - counter])
                     return PokerResult.PLAYER_ONE_WIN;
-                if(Flash(ranks1, suits1)[Flash(ranks1, suits1).length-1-counter]<Flash(ranks2, suits2)[Flash(ranks2, suits2).length-1-counter])
+                if (Flash(ranks1, suits1)[Flash(ranks1, suits1).length - 1 - counter] < Flash(ranks2, suits2)[Flash(ranks2, suits2).length - 1 - counter])
                     return PokerResult.PLAYER_TWO_WIN;
             }
             return PokerResult.DRAW;
-        } else if (Flash(ranks1, suits1).length!=0 && Flash(ranks2, suits2).length==0) {
+        } else if (Flash(ranks1, suits1).length != 0 && Flash(ranks2, suits2).length == 0) {
             return PokerResult.PLAYER_ONE_WIN;
-        } else if (Flash(ranks1, suits1).length==0 && Flash(ranks2, suits2).length!=0) {
+        } else if (Flash(ranks1, suits1).length == 0 && Flash(ranks2, suits2).length != 0) {
             return PokerResult.PLAYER_TWO_WIN;
         } else if (Street(ranks1) == Street(ranks2) && Street(ranks1) != 0 && Street(ranks2) != 0) {
             return PokerResult.DRAW;
@@ -1088,6 +1088,14 @@ public class PokerGame {
             return PokerResult.PLAYER_ONE_WIN;
         } else if (Set(ranks1) < Set(ranks2)) {
             return PokerResult.PLAYER_TWO_WIN;
+        } else if (TwoPairs(ranks1)[0] > TwoPairs(ranks2)[0] &&
+                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
+                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
+            return PokerResult.PLAYER_ONE_WIN;
+        } else if (TwoPairs(ranks1)[0] < TwoPairs(ranks2)[0] &&
+                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
+                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
+            return PokerResult.PLAYER_TWO_WIN;
         } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
                 TwoPairs(ranks1)[1] == TwoPairs(ranks2)[1] &&
                 TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
@@ -1096,25 +1104,10 @@ public class PokerGame {
 
             List<Integer> list1 = new ArrayList<>();
             for (int i = 0; i < ranks1.length; i++) {
-                list1.add(ranks1[i]);
+                if (ranks1[i] != TwoPairs(ranks1)[0] && ranks1[i] != TwoPairs(ranks1)[1])
+                    list1.add(ranks1[i]);
             }
 
-            for (int i = 0; i < ranks1.length - 1; i++) {
-                for (int k = i + 1; k < ranks1.length; k++) {
-                    if (ranks1[i] == TwoPairs(ranks1)[0]) {
-                        list1.remove((Integer) ranks1[i]);
-
-
-                        break;
-                    }
-                    if (ranks1[k] == TwoPairs(ranks1)[1]) {
-
-                        list1.remove((Integer) ranks1[k]);
-
-                        break;
-                    }
-                }
-            }
             int[] withoutpairs1 = list1.stream()
                     .mapToInt(Integer::intValue)
                     .toArray();
@@ -1122,25 +1115,9 @@ public class PokerGame {
 
             List<Integer> list2 = new ArrayList<>();
             for (int i = 0; i < ranks2.length; i++) {
-                list2.add(ranks2[i]);
+                if (ranks2[i] != TwoPairs(ranks2)[0] && ranks2[i] != TwoPairs(ranks2)[1])
+                    list2.add(ranks2[i]);
             }
-            for (int i = 0; i < ranks2.length - 1; i++) {
-                for (int k = i + 1; k < ranks2.length; k++) {
-                    if (ranks2[i] == TwoPairs(ranks2)[0]) {
-                        list2.remove((Integer) ranks2[i]);
-
-
-                        break;
-                    }
-                    if (ranks2[k] == TwoPairs(ranks2)[1]) {
-
-                        list2.remove((Integer) ranks2[k]);
-
-                        break;
-                    }
-                }
-            }
-
 
             int[] withoutpairs2 = list2.stream()
                     .mapToInt(Integer::intValue)
@@ -1166,9 +1143,9 @@ public class PokerGame {
                 TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
                 TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
-        } else if ((TwoPairs(ranks2)[0]==0 || TwoPairs(ranks2)[1]==0) && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
+        } else if ((TwoPairs(ranks2)[0] == 0 || TwoPairs(ranks2)[1] == 0) && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
             return PokerResult.PLAYER_ONE_WIN;
-        } else if ((TwoPairs(ranks1)[0]==0 || TwoPairs(ranks1)[1]==0) && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
+        } else if ((TwoPairs(ranks1)[0] == 0 || TwoPairs(ranks1)[1] == 0) && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
         } else if (Pair(ranks1) == Pair(ranks2) && Pair(ranks1) != 0 && Pair(ranks2) != 0) {
 
