@@ -8,10 +8,6 @@ public class InvalidPokerBoardException extends RuntimeException {
         this.message = message;
     }
 
-    public InvalidPokerBoardException(String message, String message1) {
-        super(message);
-        this.message = message1;
-    }
 
     @Override
     public String getMessage() {
