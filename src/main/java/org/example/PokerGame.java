@@ -83,7 +83,7 @@ public class PokerGame {
             }
 
 
-            //Надо реализвать проверку комбинаций, идем от старшей к нижней
+
 
 
             int[] firstPlayerRanks = new int[7];

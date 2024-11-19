@@ -148,6 +148,12 @@ public class DealerExample implements Dealer {
 
 
             }
+            else if (kiker1 > kiker2) {
+                return PokerResult.PLAYER_ONE_WIN;
+            }
+            else {
+                return PokerResult.PLAYER_TWO_WIN;
+            }
 
         } else if (Set(ranks1) > Set(ranks2)) {
             return PokerResult.PLAYER_ONE_WIN;
