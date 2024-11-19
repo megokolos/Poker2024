@@ -111,4 +111,19 @@ public class Test {
         Assert.assertEquals(PokerResult.PLAYER_TWO_WIN, result);
     }
 
+    @org.junit.Test
+    public void ExceptionSameCards(){
+        Board board = new Board("KDKS", "3D5H", "KH3S6C", "KS", "4S");
+
+
+        Assert.assertThrows(InvalidPokerBoardException.class, () -> dealer.decideWinner(board));
+    }
+
+    @org.junit.Test
+    public void ExceptionNoCards(){
+        Board board = new Board("KDKS", "3D5H", "KH3S6C", null, "4S");
+
+
+        Assert.assertThrows(InvalidPokerBoardException.class, () -> dealer.decideWinner(board));
+    }
 }
