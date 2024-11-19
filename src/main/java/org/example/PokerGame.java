@@ -16,8 +16,13 @@ public class PokerGame {
         board = dealer.dealRiver(board);
 
 
+        try {
+            System.out.println(dealer.decideWinner(board));
+        }catch (InvalidPokerBoardException e) {
+            System.out.println(e.getMessage());
 
-        System.out.println(dealer.decideWinner(board));
+        }
+
 
 
     }

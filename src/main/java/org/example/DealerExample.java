@@ -56,7 +56,6 @@ public class DealerExample implements Dealer {
     @Override
     public PokerResult decideWinner(Board board) {
 
-        try {
 
 
 
@@ -109,6 +108,9 @@ public class DealerExample implements Dealer {
             System.out.println(board.toString());
             System.out.println();
 
+
+
+
             for (int i = 0; i < allCardsInGame.size() - 1; i++) {
                 for (int j = i + 1; j < allCardsInGame.size(); j++) {
                     if (allCardsInGame.get(i).equals(allCardsInGame.get(j)))
@@ -123,6 +125,7 @@ public class DealerExample implements Dealer {
                                         "– ДЕГЕНЕРАТ ЕБУЧИЙ! Вот пока ты это делал, дебил, ебаная сука, БЛЯДЬ, так все и происходило!");
                 }
             }
+
 
 
             int[] firstPlayerRanks = new int[7];
@@ -425,10 +428,7 @@ public class DealerExample implements Dealer {
 
 
             return PokerResult.DRAW;
-        }catch (InvalidPokerBoardException e) {
-            System.out.println(e.getMessage());
-        }
-        return PokerResult.DRAW;
+
     }
     public static boolean FlashRoyal(int[] ranks, String[] suits) {
 
