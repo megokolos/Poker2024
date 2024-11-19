@@ -54,276 +54,380 @@ public class DealerExample implements Dealer {
     }
 
     @Override
-    public PokerResult decideWinner(int[] ranks1, String[] suits1, int[] ranks2, String[] suits2) {
+    public PokerResult decideWinner(Board board) {
 
-        if (FlashRoyal(ranks1, suits1) && FlashRoyal(ranks2, suits2)) {
-            return PokerResult.DRAW;
-        } else if (FlashRoyal(ranks1, suits1)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (FlashRoyal(ranks2, suits2)) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (StreetFlash(ranks1, suits1) != 0 && StreetFlash(ranks2, suits2) != 0 && StreetFlash(ranks1, suits1) == StreetFlash(ranks2, suits2)) {
-            return PokerResult.DRAW;
-        } else if (StreetFlash(ranks1, suits1) != 0 && StreetFlash(ranks2, suits2) == 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (StreetFlash(ranks1, suits1) == 0 && StreetFlash(ranks2, suits2) != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (FourOfAKind(ranks1) != 0 && FourOfAKind(ranks2) != 0 && FourOfAKind(ranks1) == FourOfAKind(ranks2)) {
+        try {
 
 
-            int kiker1 = determineKicker(ranks1, FourOfAKind(ranks1));
-            int kiker2 = determineKicker(ranks2, FourOfAKind(ranks2));
 
-            if (kiker1 == kiker2)
-                return PokerResult.DRAW;
-            else if (kiker1 > kiker2)
-                return PokerResult.PLAYER_ONE_WIN;
-            else
-                return PokerResult.PLAYER_TWO_WIN;
-        } else if (FourOfAKind(ranks1) != 0 && FourOfAKind(ranks2) == 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (FourOfAKind(ranks1) == 0 && FourOfAKind(ranks2) != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (FullHouse(ranks1) == FullHouse(ranks2) && FullHouse(ranks1) != 0 && FullHouse(ranks2) != 0) {
-            return PokerResult.DRAW;
-        } else if (FullHouse(ranks1) > FullHouse(ranks2)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (FullHouse(ranks1) < FullHouse(ranks2)) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (Flash(ranks1, suits1).length == Flash(ranks2, suits2).length &&
-                Flash(ranks1, suits1).length != 0 && Flash(ranks2, suits2).length != 0) {
+            String firstPlayer1Card = "";
+            String firstPlayer2Card = "";
+            String secondPlayer1Card = "";
+            String secondPlayer2Card = "";
+            String flop1 = "";
+            String flop2 = "";
+            String flop3 = "";
+            String turn = board.getTurn();
+            String river = board.getRiver();
 
-            for (int counter = 0; counter < 5; counter++) {
-                if (Flash(ranks1, suits1)[Flash(ranks1, suits1).length - 1 - counter] > Flash(ranks2, suits2)[Flash(ranks2, suits2).length - 1 - counter])
-                    return PokerResult.PLAYER_ONE_WIN;
-                if (Flash(ranks1, suits1)[Flash(ranks1, suits1).length - 1 - counter] < Flash(ranks2, suits2)[Flash(ranks2, suits2).length - 1 - counter])
-                    return PokerResult.PLAYER_TWO_WIN;
+
+            firstPlayer1Card = SeparatePlayerCards(board.getPlayerOne(), firstPlayer1Card, firstPlayer2Card)[0];
+            firstPlayer2Card = SeparatePlayerCards(board.getPlayerOne(), firstPlayer1Card, firstPlayer2Card)[1];
+
+            secondPlayer1Card = SeparatePlayerCards(board.getPlayerTwo(), secondPlayer1Card, secondPlayer2Card)[0];
+            secondPlayer2Card = SeparatePlayerCards(board.getPlayerTwo(), secondPlayer1Card, secondPlayer2Card)[1];
+
+
+            flop1 = SeparateFlop(board.getFlop(), flop1, flop2, flop3)[0];
+            flop2 = SeparateFlop(board.getFlop(), flop1, flop2, flop3)[1];
+            flop3 = SeparateFlop(board.getFlop(), flop1, flop2, flop3)[2];
+
+
+            List<String> allCardsInGame = new ArrayList<>();
+            allCardsInGame.add(firstPlayer1Card);
+            allCardsInGame.add(firstPlayer2Card);
+            allCardsInGame.add(secondPlayer1Card);
+            allCardsInGame.add(secondPlayer2Card);
+            allCardsInGame.add(flop1);
+            allCardsInGame.add(flop2);
+            allCardsInGame.add(flop3);
+            allCardsInGame.add(turn);
+            allCardsInGame.add(river);
+
+
+//            System.out.println(firstPlayer1Card);
+//            System.out.println(firstPlayer2Card);
+//            System.out.println(secondPlayer1Card);
+//            System.out.println(secondPlayer2Card);
+//            System.out.println(flop1);
+//            System.out.println(flop2);
+//            System.out.println(flop3);
+//            System.out.println(board.getTurn());
+//            System.out.println(board.getRiver());
+
+            System.out.println();
+            System.out.println(board.toString());
+            System.out.println();
+
+            for (int i = 0; i < allCardsInGame.size() - 1; i++) {
+                for (int j = i + 1; j < allCardsInGame.size(); j++) {
+                    if (allCardsInGame.get(i).equals(allCardsInGame.get(j)))
+                        throw new InvalidPokerBoardException(
+                                "- Почему карты одинаковые в колоде?\n" +
+                                        "- Ты кто такой, сука, чтоб это сделать?\n" +
+                                        "– Я всегда это делал, когда..\n" +
+                                        "– ВЫ ЧЁ, ДЕБИЛЫ? Вы чё, ебанутые, что ли? Действи.. вы в натуре ебанутые? Эта сидит там, чешет колоду, блядь. Этот стоит, грит: \"Я те щас тут тоже раздам\"..\n" +
+                                        "– Ну посмотрите..\n" +
+                                        "– ЁБ ТВОЮ МАТЬ! У вас дилер есть, чтобы это делать на моих глазах, мудак ёбаный!\n" +
+                                        "– Хорошо, будет делать дилер. Раньше это делал всегда я..\n" +
+                                        "– ДЕГЕНЕРАТ ЕБУЧИЙ! Вот пока ты это делал, дебил, ебаная сука, БЛЯДЬ, так все и происходило!");
+                }
             }
-            return PokerResult.DRAW;
-        } else if (Flash(ranks1, suits1).length != 0 && Flash(ranks2, suits2).length == 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (Flash(ranks1, suits1).length == 0 && Flash(ranks2, suits2).length != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (Street(ranks1) == Street(ranks2) && Street(ranks1) != 0 && Street(ranks2) != 0) {
-            return PokerResult.DRAW;
-        } else if (Street(ranks1) > Street(ranks2)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (Street(ranks1) < Street(ranks2)) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (Set(ranks1) == Set(ranks2) && Set(ranks1) != 0 && Set(ranks2) != 0) {
 
-            int kiker1 = determineKicker(ranks1, Set(ranks1));
-            int kiker2 = determineKicker(ranks2, Set(ranks2));
 
-            if (kiker1 == kiker2) {
+            int[] firstPlayerRanks = new int[7];
+            String[] firstPlayerSuits = new String[7];
+
+
+            int[] secondPlayerRanks = new int[7];
+            String[] secondPlayerSuits = new String[7];
+
+
+            //Номиналы карт
+
+            PlayersCardsAutofill(firstPlayer1Card, firstPlayerRanks, 0);
+            PlayersCardsAutofill(firstPlayer2Card, firstPlayerRanks, 1);
+
+            PlayersCardsAutofill(secondPlayer1Card, secondPlayerRanks, 0);
+            PlayersCardsAutofill(secondPlayer2Card, secondPlayerRanks, 1);
+
+            PlayersCardsAndTableAutofill(flop1, firstPlayerRanks, secondPlayerRanks, 2);
+            PlayersCardsAndTableAutofill(flop2, firstPlayerRanks, secondPlayerRanks, 3);
+            PlayersCardsAndTableAutofill(flop3, firstPlayerRanks, secondPlayerRanks, 4);
+            PlayersCardsAndTableAutofill(board.getTurn(), firstPlayerRanks, secondPlayerRanks, 5);
+            PlayersCardsAndTableAutofill(board.getRiver(), firstPlayerRanks, secondPlayerRanks, 6);
+
+
+            // Масти карт
+
+            SuitsAutofill(firstPlayerSuits, firstPlayer1Card, firstPlayer2Card, flop1, flop2, flop3,
+                    turn, river);
+
+
+            SuitsAutofill(secondPlayerSuits, secondPlayer1Card, secondPlayer2Card, flop1, flop2, flop3,
+                    turn, river);
+
+
+            if (FlashRoyal(firstPlayerRanks, firstPlayerSuits) && FlashRoyal(secondPlayerRanks, secondPlayerSuits)) {
+                return PokerResult.DRAW;
+            } else if (FlashRoyal(firstPlayerRanks, firstPlayerSuits)) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (FlashRoyal(secondPlayerRanks, secondPlayerSuits)) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (StreetFlash(firstPlayerRanks, firstPlayerSuits) != 0 && StreetFlash(secondPlayerRanks, secondPlayerSuits) != 0 && StreetFlash(firstPlayerRanks, firstPlayerSuits) == StreetFlash(secondPlayerRanks, secondPlayerSuits)) {
+                return PokerResult.DRAW;
+            } else if (StreetFlash(firstPlayerRanks, firstPlayerSuits) != 0 && StreetFlash(secondPlayerRanks, secondPlayerSuits) == 0) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (StreetFlash(firstPlayerRanks, firstPlayerSuits) == 0 && StreetFlash(secondPlayerRanks, secondPlayerSuits) != 0) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (FourOfAKind(firstPlayerRanks) != 0 && FourOfAKind(secondPlayerRanks) != 0 && FourOfAKind(firstPlayerRanks) == FourOfAKind(secondPlayerRanks)) {
+
+
+                int kiker1 = determineKicker(firstPlayerRanks, FourOfAKind(firstPlayerRanks));
+                int kiker2 = determineKicker(secondPlayerRanks, FourOfAKind(secondPlayerRanks));
+
+                if (kiker1 == kiker2)
+                    return PokerResult.DRAW;
+                else if (kiker1 > kiker2)
+                    return PokerResult.PLAYER_ONE_WIN;
+                else
+                    return PokerResult.PLAYER_TWO_WIN;
+            } else if (FourOfAKind(firstPlayerRanks) != 0 && FourOfAKind(secondPlayerRanks) == 0) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (FourOfAKind(firstPlayerRanks) == 0 && FourOfAKind(secondPlayerRanks) != 0) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (FullHouse(firstPlayerRanks) == FullHouse(secondPlayerRanks) && FullHouse(firstPlayerRanks) != 0 && FullHouse(secondPlayerRanks) != 0) {
+                return PokerResult.DRAW;
+            } else if (FullHouse(firstPlayerRanks) > FullHouse(secondPlayerRanks)) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (FullHouse(firstPlayerRanks) < FullHouse(secondPlayerRanks)) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (Flash(firstPlayerRanks, firstPlayerSuits).length == Flash(secondPlayerRanks, secondPlayerSuits).length &&
+                    Flash(firstPlayerRanks, firstPlayerSuits).length != 0 && Flash(secondPlayerRanks, secondPlayerSuits).length != 0) {
+
+                for (int counter = 0; counter < 5; counter++) {
+                    if (Flash(firstPlayerRanks, firstPlayerSuits)[Flash(firstPlayerRanks, firstPlayerSuits).length - 1 - counter] > Flash(secondPlayerRanks, secondPlayerSuits)[Flash(secondPlayerRanks, secondPlayerSuits).length - 1 - counter])
+                        return PokerResult.PLAYER_ONE_WIN;
+                    if (Flash(firstPlayerRanks, firstPlayerSuits)[Flash(firstPlayerRanks, firstPlayerSuits).length - 1 - counter] < Flash(secondPlayerRanks, secondPlayerSuits)[Flash(secondPlayerRanks, secondPlayerSuits).length - 1 - counter])
+                        return PokerResult.PLAYER_TWO_WIN;
+                }
+                return PokerResult.DRAW;
+            } else if (Flash(firstPlayerRanks, firstPlayerSuits).length != 0 && Flash(secondPlayerRanks, secondPlayerSuits).length == 0) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (Flash(firstPlayerRanks, firstPlayerSuits).length == 0 && Flash(secondPlayerRanks, secondPlayerSuits).length != 0) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (Street(firstPlayerRanks) == Street(secondPlayerRanks) && Street(firstPlayerRanks) != 0 && Street(secondPlayerRanks) != 0) {
+                return PokerResult.DRAW;
+            } else if (Street(firstPlayerRanks) > Street(secondPlayerRanks)) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (Street(firstPlayerRanks) < Street(secondPlayerRanks)) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (Set(firstPlayerRanks) == Set(secondPlayerRanks) && Set(firstPlayerRanks) != 0 && Set(secondPlayerRanks) != 0) {
+
+                int kiker1 = determineKicker(firstPlayerRanks, Set(firstPlayerRanks));
+                int kiker2 = determineKicker(secondPlayerRanks, Set(secondPlayerRanks));
+
+                if (kiker1 == kiker2) {
+
+                    List<Integer> list1 = new ArrayList<>();
+                    for (int i = 0; i < firstPlayerRanks.length; i++) {
+                        if (firstPlayerRanks[i] != kiker1)
+                            list1.add(firstPlayerRanks[i]);
+                    }
+
+
+                    List<Integer> list2 = new ArrayList<>();
+                    for (int i = 0; i < secondPlayerRanks.length; i++) {
+                        if (secondPlayerRanks[i] != kiker2)
+                            list2.add(secondPlayerRanks[i]);
+                    }
+
+
+                    int[] withoutkiker1 = list1.stream()
+                            .mapToInt(Integer::intValue)
+                            .toArray();
+
+                    int[] withoutkiker2 = list2.stream()
+                            .mapToInt(Integer::intValue)
+                            .toArray();
+
+                    if (determineKicker(withoutkiker1, Set(firstPlayerRanks)) == determineKicker(withoutkiker2, Set(secondPlayerRanks)))
+                        return PokerResult.DRAW;
+                    else if (determineKicker(withoutkiker1, Set(firstPlayerRanks)) > determineKicker(withoutkiker2, Set(secondPlayerRanks))) {
+                        return PokerResult.PLAYER_ONE_WIN;
+                    } else
+                        return PokerResult.PLAYER_TWO_WIN;
+
+
+                } else if (kiker1 > kiker2) {
+                    return PokerResult.PLAYER_ONE_WIN;
+                } else {
+                    return PokerResult.PLAYER_TWO_WIN;
+                }
+
+            } else if (Set(firstPlayerRanks) > Set(secondPlayerRanks)) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (Set(firstPlayerRanks) < Set(secondPlayerRanks)) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (TwoPairs(firstPlayerRanks)[0] > TwoPairs(secondPlayerRanks)[0] &&
+                    TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[0] != 0 &&
+                    TwoPairs(firstPlayerRanks)[1] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
+                return PokerResult.PLAYER_ONE_WIN;
+            } else if (TwoPairs(firstPlayerRanks)[0] < TwoPairs(secondPlayerRanks)[0] &&
+                    TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[0] != 0 &&
+                    TwoPairs(firstPlayerRanks)[1] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
+                return PokerResult.PLAYER_TWO_WIN;
+            } else if (TwoPairs(firstPlayerRanks)[0] == TwoPairs(secondPlayerRanks)[0] &&
+                    TwoPairs(firstPlayerRanks)[1] == TwoPairs(secondPlayerRanks)[1] &&
+                    TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[0] != 0 &&
+                    TwoPairs(firstPlayerRanks)[1] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
+
 
                 List<Integer> list1 = new ArrayList<>();
-                for (int i = 0; i < ranks1.length; i++) {
-                    if (ranks1[i] != kiker1)
-                        list1.add(ranks1[i]);
+                for (int i = 0; i < firstPlayerRanks.length; i++) {
+                    if (firstPlayerRanks[i] != TwoPairs(firstPlayerRanks)[0] && firstPlayerRanks[i] != TwoPairs(firstPlayerRanks)[1])
+                        list1.add(firstPlayerRanks[i]);
                 }
+
+                int[] withoutpairs1 = list1.stream()
+                        .mapToInt(Integer::intValue)
+                        .toArray();
 
 
                 List<Integer> list2 = new ArrayList<>();
-                for (int i = 0; i < ranks2.length; i++) {
-                    if (ranks2[i] != kiker2)
-                        list2.add(ranks2[i]);
+                for (int i = 0; i < secondPlayerRanks.length; i++) {
+                    if (secondPlayerRanks[i] != TwoPairs(secondPlayerRanks)[0] && secondPlayerRanks[i] != TwoPairs(secondPlayerRanks)[1])
+                        list2.add(secondPlayerRanks[i]);
                 }
 
-
-                int[] withoutkiker1 = list1.stream()
+                int[] withoutpairs2 = list2.stream()
                         .mapToInt(Integer::intValue)
                         .toArray();
 
-                int[] withoutkiker2 = list2.stream()
-                        .mapToInt(Integer::intValue)
-                        .toArray();
+                Arrays.sort(withoutpairs1);
+                Arrays.sort(withoutpairs2);
 
-                if (determineKicker(withoutkiker1, Set(ranks1)) == determineKicker(withoutkiker2, Set(ranks2)))
+
+                if (withoutpairs1[withoutpairs1.length - 1] == withoutpairs2[withoutpairs2.length - 1])
                     return PokerResult.DRAW;
-                else if (determineKicker(withoutkiker1, Set(ranks1)) > determineKicker(withoutkiker2, Set(ranks2))) {
+                else if (withoutpairs1[withoutpairs1.length - 1] > withoutpairs2[withoutpairs2.length - 1])
                     return PokerResult.PLAYER_ONE_WIN;
-                } else
+                else
                     return PokerResult.PLAYER_TWO_WIN;
-
-
-            }
-            else if (kiker1 > kiker2) {
+            } else if (TwoPairs(firstPlayerRanks)[0] == TwoPairs(secondPlayerRanks)[0] &&
+                    TwoPairs(firstPlayerRanks)[1] > TwoPairs(secondPlayerRanks)[1] &&
+                    TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[0] != 0 &&
+                    TwoPairs(firstPlayerRanks)[1] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
                 return PokerResult.PLAYER_ONE_WIN;
-            }
-            else {
+            } else if (TwoPairs(firstPlayerRanks)[0] == TwoPairs(secondPlayerRanks)[0] &&
+                    TwoPairs(firstPlayerRanks)[1] < TwoPairs(secondPlayerRanks)[1] &&
+                    TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[0] != 0 &&
+                    TwoPairs(firstPlayerRanks)[1] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
                 return PokerResult.PLAYER_TWO_WIN;
-            }
-
-        } else if (Set(ranks1) > Set(ranks2)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (Set(ranks1) < Set(ranks2)) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1)[0] > TwoPairs(ranks2)[0] &&
-                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
-                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (TwoPairs(ranks1)[0] < TwoPairs(ranks2)[0] &&
-                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
-                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
-                TwoPairs(ranks1)[1] == TwoPairs(ranks2)[1] &&
-                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
-                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
-
-
-            List<Integer> list1 = new ArrayList<>();
-            for (int i = 0; i < ranks1.length; i++) {
-                if (ranks1[i] != TwoPairs(ranks1)[0] && ranks1[i] != TwoPairs(ranks1)[1])
-                    list1.add(ranks1[i]);
-            }
-
-            int[] withoutpairs1 = list1.stream()
-                    .mapToInt(Integer::intValue)
-                    .toArray();
-
-
-            List<Integer> list2 = new ArrayList<>();
-            for (int i = 0; i < ranks2.length; i++) {
-                if (ranks2[i] != TwoPairs(ranks2)[0] && ranks2[i] != TwoPairs(ranks2)[1])
-                    list2.add(ranks2[i]);
-            }
-
-            int[] withoutpairs2 = list2.stream()
-                    .mapToInt(Integer::intValue)
-                    .toArray();
-
-            Arrays.sort(withoutpairs1);
-            Arrays.sort(withoutpairs2);
-
-
-            if (withoutpairs1[withoutpairs1.length - 1] == withoutpairs2[withoutpairs2.length - 1])
-                return PokerResult.DRAW;
-            else if (withoutpairs1[withoutpairs1.length - 1] > withoutpairs2[withoutpairs2.length - 1])
+            } else if ((TwoPairs(secondPlayerRanks)[0] == 0 || TwoPairs(secondPlayerRanks)[1] == 0) && TwoPairs(firstPlayerRanks)[0] != 0 && TwoPairs(firstPlayerRanks)[1] != 0) {
                 return PokerResult.PLAYER_ONE_WIN;
-            else
+            } else if ((TwoPairs(firstPlayerRanks)[0] == 0 || TwoPairs(firstPlayerRanks)[1] == 0) && TwoPairs(secondPlayerRanks)[0] != 0 && TwoPairs(secondPlayerRanks)[1] != 0) {
                 return PokerResult.PLAYER_TWO_WIN;
-        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
-                TwoPairs(ranks1)[1] > TwoPairs(ranks2)[1] &&
-                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
-                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (TwoPairs(ranks1)[0] == TwoPairs(ranks2)[0] &&
-                TwoPairs(ranks1)[1] < TwoPairs(ranks2)[1] &&
-                TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks2)[0] != 0 &&
-                TwoPairs(ranks1)[1] != 0 && TwoPairs(ranks2)[1] != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if ((TwoPairs(ranks2)[0] == 0 || TwoPairs(ranks2)[1] == 0) && TwoPairs(ranks1)[0] != 0 && TwoPairs(ranks1)[1] != 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if ((TwoPairs(ranks1)[0] == 0 || TwoPairs(ranks1)[1] == 0) && TwoPairs(ranks2)[0] != 0 && TwoPairs(ranks2)[1] != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if (Pair(ranks1) == Pair(ranks2) && Pair(ranks1) != 0 && Pair(ranks2) != 0) {
+            } else if (Pair(firstPlayerRanks) == Pair(secondPlayerRanks) && Pair(firstPlayerRanks) != 0 && Pair(secondPlayerRanks) != 0) {
 
 
-            int kiker1 = determineKicker(ranks1, Pair(ranks1));
-            int kiker2 = determineKicker(ranks2, Pair(ranks2));
+                int kiker1 = determineKicker(firstPlayerRanks, Pair(firstPlayerRanks));
+                int kiker2 = determineKicker(secondPlayerRanks, Pair(secondPlayerRanks));
 
-            if (kiker1 == kiker2) {
+                if (kiker1 == kiker2) {
 
-                List<Integer> list11 = new ArrayList<>();
-                for (int i = 0; i < ranks1.length; i++) {
-                    if (ranks1[i] != kiker1)
-                        list11.add(ranks1[i]);
-                }
-
-
-                List<Integer> list22 = new ArrayList<>();
-                for (int i = 0; i < ranks2.length; i++) {
-                    if (ranks2[i] != kiker2)
-                        list22.add(ranks2[i]);
-                }
+                    List<Integer> list11 = new ArrayList<>();
+                    for (int i = 0; i < firstPlayerRanks.length; i++) {
+                        if (firstPlayerRanks[i] != kiker1)
+                            list11.add(firstPlayerRanks[i]);
+                    }
 
 
-                int[] withoutkiker1 = list11.stream()
-                        .mapToInt(Integer::intValue)
-                        .toArray();
-
-                int[] withoutkiker2 = list22.stream()
-                        .mapToInt(Integer::intValue)
-                        .toArray();
-
-                if (determineKicker(withoutkiker1, Pair(ranks1)) == determineKicker(withoutkiker2, Pair(ranks2))) {
+                    List<Integer> list22 = new ArrayList<>();
+                    for (int i = 0; i < secondPlayerRanks.length; i++) {
+                        if (secondPlayerRanks[i] != kiker2)
+                            list22.add(secondPlayerRanks[i]);
+                    }
 
 
-                    int kiker21 = determineKicker(withoutkiker1, Pair(ranks1));
-                    int kiker22 = determineKicker(withoutkiker2, Pair(ranks2));
+                    int[] withoutkiker1 = list11.stream()
+                            .mapToInt(Integer::intValue)
+                            .toArray();
+
+                    int[] withoutkiker2 = list22.stream()
+                            .mapToInt(Integer::intValue)
+                            .toArray();
+
+                    if (determineKicker(withoutkiker1, Pair(firstPlayerRanks)) == determineKicker(withoutkiker2, Pair(secondPlayerRanks))) {
 
 
-                    if (kiker21 == kiker22) {
+                        int kiker21 = determineKicker(withoutkiker1, Pair(firstPlayerRanks));
+                        int kiker22 = determineKicker(withoutkiker2, Pair(secondPlayerRanks));
 
-                        List<Integer> listpair1 = new ArrayList<>();
-                        for (int i = 0; i < withoutkiker1.length; i++) {
-                            if (withoutkiker1[i] != kiker21)
-                                listpair1.add(withoutkiker1[i]);
+
+                        if (kiker21 == kiker22) {
+
+                            List<Integer> listpair1 = new ArrayList<>();
+                            for (int i = 0; i < withoutkiker1.length; i++) {
+                                if (withoutkiker1[i] != kiker21)
+                                    listpair1.add(withoutkiker1[i]);
+                            }
+
+
+                            List<Integer> listpair2 = new ArrayList<>();
+                            for (int i = 0; i < withoutkiker2.length; i++) {
+                                if (withoutkiker2[i] != kiker22)
+                                    listpair2.add(withoutkiker2[i]);
+                            }
+
+
+                            int[] withoutkiker21 = listpair1.stream()
+                                    .mapToInt(Integer::intValue)
+                                    .toArray();
+
+                            int[] withoutkiker22 = listpair2.stream()
+                                    .mapToInt(Integer::intValue)
+                                    .toArray();
+
+                            if (determineKicker(withoutkiker21, Pair(firstPlayerRanks)) == determineKicker(withoutkiker22, Pair(secondPlayerRanks))) {
+                                return PokerResult.DRAW;
+                            } else if (determineKicker(withoutkiker21, Pair(firstPlayerRanks)) > determineKicker(withoutkiker22, Pair(secondPlayerRanks)))
+                                return PokerResult.PLAYER_ONE_WIN;
+                            else
+                                return PokerResult.PLAYER_TWO_WIN;
+
                         }
-
-
-                        List<Integer> listpair2 = new ArrayList<>();
-                        for (int i = 0; i < withoutkiker2.length; i++) {
-                            if (withoutkiker2[i] != kiker22)
-                                listpair2.add(withoutkiker2[i]);
-                        }
-
-
-                        int[] withoutkiker21 = listpair1.stream()
-                                .mapToInt(Integer::intValue)
-                                .toArray();
-
-                        int[] withoutkiker22 = listpair2.stream()
-                                .mapToInt(Integer::intValue)
-                                .toArray();
-
-                        if (determineKicker(withoutkiker21, Pair(ranks1)) == determineKicker(withoutkiker22, Pair(ranks2))) {
-                            return PokerResult.DRAW;
-                        } else if (determineKicker(withoutkiker21, Pair(ranks1)) > determineKicker(withoutkiker22, Pair(ranks2)))
+                        if (kiker21 > kiker22)
                             return PokerResult.PLAYER_ONE_WIN;
                         else
                             return PokerResult.PLAYER_TWO_WIN;
 
-                    }
-                    if (kiker21 > kiker22)
+
+                    } else if (determineKicker(withoutkiker1, Pair(firstPlayerRanks)) > determineKicker(withoutkiker2, Pair(secondPlayerRanks))) {
                         return PokerResult.PLAYER_ONE_WIN;
-                    else
+                    } else
                         return PokerResult.PLAYER_TWO_WIN;
 
 
-                } else if (determineKicker(withoutkiker1, Pair(ranks1)) > determineKicker(withoutkiker2, Pair(ranks2))) {
+                } else if (kiker1 > kiker2) {
                     return PokerResult.PLAYER_ONE_WIN;
                 } else
                     return PokerResult.PLAYER_TWO_WIN;
 
-
-            } else if (kiker1 > kiker2) {
+            } else if (Pair(firstPlayerRanks) > Pair(secondPlayerRanks)) {
                 return PokerResult.PLAYER_ONE_WIN;
-            } else
+            } else if (Pair(firstPlayerRanks) < Pair(secondPlayerRanks)) {
                 return PokerResult.PLAYER_TWO_WIN;
+            } else {
+                int[] sortedarray1 = ElderRank(firstPlayerRanks);
+                int[] sortedarray2 = ElderRank(secondPlayerRanks);
 
-        } else if (Pair(ranks1) > Pair(ranks2)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (Pair(ranks1) < Pair(ranks2)) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else {
-            int[] sortedarray1 = ElderRank(ranks1);
-            int[] sortedarray2 = ElderRank(ranks2);
+                for (int i = sortedarray1.length - 1; i > 1; i--) {
+                    if (sortedarray1[i] == sortedarray2[i])
+                        continue;
+                    else if (sortedarray1[i] > sortedarray2[i])
+                        return PokerResult.PLAYER_ONE_WIN;
+                    else
+                        return PokerResult.PLAYER_TWO_WIN;
+                }
 
-            for (int i = sortedarray1.length - 1; i > 1; i--) {
-                if (sortedarray1[i] == sortedarray2[i])
-                    continue;
-                else if (sortedarray1[i] > sortedarray2[i])
-                    return PokerResult.PLAYER_ONE_WIN;
-                else
-                    return PokerResult.PLAYER_TWO_WIN;
             }
 
+
+            return PokerResult.DRAW;
+        }catch (InvalidPokerBoardException e) {
+            System.out.println(e.getMessage());
         }
-
-
         return PokerResult.DRAW;
     }
     public static boolean FlashRoyal(int[] ranks, String[] suits) {
@@ -623,5 +727,181 @@ public class DealerExample implements Dealer {
         remainingCards.sort(Collections.reverseOrder());
 
         return remainingCards.isEmpty() ? 0 : remainingCards.get(0);
+    }
+    static void PlayersCardsAutofill(String card, int[] player1Cards, int position) {
+        if (card.startsWith("10"))
+            player1Cards[position] = 10;
+        else {
+            switch (card.substring(0, 1)) {
+                case "2":
+                    player1Cards[position] = 2;
+                    break;
+                case "3":
+                    player1Cards[position] = 3;
+                    break;
+                case "4":
+                    player1Cards[position] = 4;
+                    break;
+                case "5":
+                    player1Cards[position] = 5;
+                    break;
+                case "6":
+                    player1Cards[position] = 6;
+                    break;
+                case "7":
+                    player1Cards[position] = 7;
+                    break;
+                case "8":
+                    player1Cards[position] = 8;
+                    break;
+                case "9":
+                    player1Cards[position] = 9;
+                    break;
+                case "J":
+                    player1Cards[position] = 11;
+                    break;
+                case "Q":
+                    player1Cards[position] = 12;
+                    break;
+                case "K":
+                    player1Cards[position] = 13;
+                    break;
+                case "A":
+                    player1Cards[position] = 14;
+                    break;
+
+            }
+        }
+    }
+
+    static void PlayersCardsAndTableAutofill(String card, int[] player1Cards, int[] player2Cards, int position) {
+        if (card.startsWith("10")) {
+            player1Cards[position] = 10;
+            player2Cards[position] = 10;
+        } else {
+            switch (card.substring(0, 1)) {
+                case "2": {
+                    player1Cards[position] = 2;
+                    player2Cards[position] = 2;
+                    break;
+                }
+                case "3": {
+                    player1Cards[position] = 3;
+                    player2Cards[position] = 3;
+                    break;
+                }
+                case "4": {
+                    player1Cards[position] = 4;
+                    player2Cards[position] = 4;
+                    break;
+                }
+                case "5": {
+                    player1Cards[position] = 5;
+                    player2Cards[position] = 5;
+                    break;
+                }
+                case "6": {
+                    player1Cards[position] = 6;
+                    player2Cards[position] = 6;
+                    break;
+                }
+                case "7": {
+                    player1Cards[position] = 7;
+                    player2Cards[position] = 7;
+                    break;
+                }
+                case "8": {
+                    player1Cards[position] = 8;
+                    player2Cards[position] = 8;
+                    break;
+                }
+                case "9": {
+                    player1Cards[position] = 9;
+                    player2Cards[position] = 9;
+                    break;
+                }
+                case "J": {
+                    player1Cards[position] = 11;
+                    player2Cards[position] = 11;
+                    break;
+                }
+                case "Q": {
+                    player1Cards[position] = 12;
+                    player2Cards[position] = 12;
+                    break;
+                }
+                case "K": {
+                    player1Cards[position] = 13;
+                    player2Cards[position] = 13;
+                    break;
+                }
+                case "A": {
+                    player1Cards[position] = 14;
+                    player2Cards[position] = 14;
+                    break;
+                }
+
+            }
+        }
+    }
+
+    public static void SuitsAutofill(String[] suitsArray, String firstCard, String secondCard, String flop1,
+                                     String flop2, String flop3, String turn, String river) {
+        suitsArray[0] = firstCard.substring(firstCard.length() - 1);
+        suitsArray[1] = secondCard.substring(secondCard.length() - 1);
+        suitsArray[2] = flop1.substring(flop1.length() - 1);
+        suitsArray[3] = flop2.substring(flop2.length() - 1);
+        suitsArray[4] = flop3.substring(flop3.length() - 1);
+        suitsArray[5] = turn.substring(turn.length() - 1);
+        suitsArray[6] = river.substring(river.length() - 1);
+    }
+
+    public static String[] SeparatePlayerCards(String cards, String firstCard, String secondCard) {
+        if (cards.startsWith("10")) {
+            firstCard = cards.substring(0, 3);
+            secondCard = cards.substring(3);
+        } else {
+            firstCard = cards.substring(0, 2);
+            secondCard = cards.substring(2);
+        }
+        return new String[]{firstCard, secondCard};
+    }
+
+    public static String[] SeparateFlop(String flop, String flop1Card, String flop2Card, String flop3Card) {
+        if (flop.length() == 6) {
+            flop1Card = flop.substring(0, 2);
+            flop2Card = flop.substring(2, 4);
+            flop3Card = flop.substring(4);
+        } else if (flop.length() == 9) {
+            flop1Card = flop.substring(0, 3);
+            flop2Card = flop.substring(3, 6);
+            flop3Card = flop.substring(6);
+        } else {
+            if (flop.startsWith("10")) {
+                flop1Card = flop.substring(0, 3);
+                String check2and3 = flop.substring(3);
+                if (check2and3.startsWith("10")) {
+                    flop2Card = check2and3.substring(0, 3);
+                    flop3Card = check2and3.substring(3);
+                } else {
+                    flop2Card = check2and3.substring(0, 2);
+                    flop3Card = check2and3.substring(2);
+                }
+            } else {
+                flop1Card = flop.substring(0, 2);
+                String check2and3 = flop.substring(2);
+                if (check2and3.startsWith("10")) {
+                    flop2Card = check2and3.substring(0, 3);
+                    flop3Card = check2and3.substring(3);
+                } else {
+                    flop2Card = check2and3.substring(0, 2);
+                    flop3Card = check2and3.substring(2);
+                }
+            }
+
+
+        }
+        return new String[]{flop1Card, flop2Card, flop3Card};
+
     }
 }

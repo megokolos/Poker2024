@@ -30,6 +30,6 @@ public interface Dealer {
      *
      * @throws InvalidPokerBoardException в случае отсутствия/некорректности каких-либо карт
      */
-    PokerResult decideWinner(int[] ranks1, String[] suits1, int[] ranks2, String[] suits2) throws InvalidPokerBoardException;
+    PokerResult decideWinner(Board board) throws InvalidPokerBoardException;
 
 }
