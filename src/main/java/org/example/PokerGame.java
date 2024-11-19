@@ -7,8 +7,8 @@ public class PokerGame {
     public static void main(String[] args) {
 
 
-        Deck deck = new Deck();
-        Dealer dealer = new DealerExample(deck);
+
+        Dealer dealer = new DealerExample();
 
         Board board = dealer.dealCardsToPlayers();
         board = dealer.dealFlop(board);

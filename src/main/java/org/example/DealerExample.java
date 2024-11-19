@@ -11,8 +11,8 @@ public class DealerExample implements Dealer {
 
     private Deck deck;
 
-    public DealerExample(Deck deck) {
-        this.deck=deck;
+    public DealerExample() {
+        this.deck= new Deck();
     }
 
     @Override
@@ -69,6 +69,12 @@ public class DealerExample implements Dealer {
             String turn = board.getTurn();
             String river = board.getRiver();
 
+            if (board.getPlayerOne()==null || board.getPlayerTwo() == null || board.getFlop()==null ||
+            board.getTurn()==null || board.getRiver()==null){
+                throw new InvalidPokerBoardException(
+                        "- А карты где?");
+            }
+
 
             firstPlayer1Card = SeparatePlayerCards(board.getPlayerOne(), firstPlayer1Card, firstPlayer2Card)[0];
             firstPlayer2Card = SeparatePlayerCards(board.getPlayerOne(), firstPlayer1Card, firstPlayer2Card)[1];
@@ -115,14 +121,7 @@ public class DealerExample implements Dealer {
                 for (int j = i + 1; j < allCardsInGame.size(); j++) {
                     if (allCardsInGame.get(i).equals(allCardsInGame.get(j)))
                         throw new InvalidPokerBoardException(
-                                "- Почему карты одинаковые в колоде?\n" +
-                                        "- Ты кто такой, сука, чтоб это сделать?\n" +
-                                        "– Я всегда это делал, когда..\n" +
-                                        "– ВЫ ЧЁ, ДЕБИЛЫ? Вы чё, ебанутые, что ли? Действи.. вы в натуре ебанутые? Эта сидит там, чешет колоду, блядь. Этот стоит, грит: \"Я те щас тут тоже раздам\"..\n" +
-                                        "– Ну посмотрите..\n" +
-                                        "– ЁБ ТВОЮ МАТЬ! У вас дилер есть, чтобы это делать на моих глазах, мудак ёбаный!\n" +
-                                        "– Хорошо, будет делать дилер. Раньше это делал всегда я..\n" +
-                                        "– ДЕГЕНЕРАТ ЕБУЧИЙ! Вот пока ты это делал, дебил, ебаная сука, БЛЯДЬ, так все и происходило!");
+                                "- Почему карты одинаковые в колоде?");
                 }
             }
 
