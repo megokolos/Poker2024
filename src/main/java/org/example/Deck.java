@@ -1,7 +1,6 @@
 package org.example;
 
 
-
 public class Deck {
 
     private final String[] deck = {
@@ -11,9 +10,6 @@ public class Deck {
             "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS", "AS"
     };
 
-    public Deck() {
-
-    }
 
     public String[] getDeck() {
         return deck;

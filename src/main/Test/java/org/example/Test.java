@@ -26,7 +26,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ElderStreet(){
+    public void elderStreet(){
         Board board = new Board("ASKS", "9D8H", "QDJH10S", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -34,14 +34,14 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ElderFlash(){
+    public void elderFlash(){
         Board board = new Board("ASKS", "3S7S", "3D3H10S", "2S", "4S");
 
         PokerResult result = dealer.decideWinner(board);
         Assert.assertEquals(PokerResult.PLAYER_ONE_WIN, result);
     }
     @org.junit.Test
-    public void ElderPair(){
+    public void elderPair(){
         Board board = new Board("AS2S", "3D3H", "AHJS10S", "10H", "2D");
 
         PokerResult result = dealer.decideWinner(board);
@@ -49,14 +49,14 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ElderSet(){
+    public void elderSet(){
         Board board = new Board("3D3H", "KHKS", "AHKD3C", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
         Assert.assertEquals(PokerResult.PLAYER_TWO_WIN, result);
     }
     @org.junit.Test
-    public void TwoTwoPairs(){
+    public void twoTwoPairs(){
         Board board = new Board("AS2S", "3D3H", "ADJS10S", "10H", "2H");
 
         PokerResult result = dealer.decideWinner(board);
@@ -64,7 +64,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ElderCard(){
+    public void elderCard(){
         Board board = new Board("2S3S", "10D6H", "QSJD5H", "7H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -72,7 +72,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void SamePair(){
+    public void samePair(){
         Board board = new Board("ASKS", "AD3H", "AHJC10C", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -80,7 +80,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void SamePairDraw(){
+    public void samePairDraw(){
         Board board = new Board("3S2S", "2D3H", "AHJC10C", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -88,7 +88,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void SameTwoTwoPairs(){
+    public void sameTwoTwoPairs(){
         Board board = new Board("3S2S", "2D3H", "ADJS10S", "3D", "2H");
 
         PokerResult result = dealer.decideWinner(board);
@@ -96,7 +96,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void KareVSFullHouse(){
+    public void kareVSFullHouse(){
         Board board = new Board("KDKS", "3D3H", "KH3S3C", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -104,7 +104,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void StreetVSSet(){
+    public void streetVSSet(){
         Board board = new Board("KDKS", "3D5H", "KH3S6C", "2H", "4S");
 
         PokerResult result = dealer.decideWinner(board);
@@ -112,7 +112,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ExceptionSameCards(){
+    public void exceptionSameCards(){
         Board board = new Board("KDKS", "3D5H", "KH3S6C", "KS", "4S");
 
 
@@ -120,7 +120,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void ExceptionNoCards(){
+    public void exceptionNoCards(){
         Board board = new Board("KDKS", "3D5H", "KH3S6C", null, "4S");
 
 
