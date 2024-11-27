@@ -4,6 +4,8 @@ package org.example;
 import java.util.*;
 
 import static org.example.CombinationsCheck.*;
+import static org.example.CheckSomeExceptions.*;
+
 
 /**
  * Пример плохого дилера - он раздает повторяющиеся карты и всегда определяет исход как ничью
@@ -15,18 +17,18 @@ public class DealerExample implements Dealer {
 
     public DealerExample() {
         this.deck = new Deck();
-    }
+        }
 
 
-        Card player1FirstCard;
-        Card player1SecondCard;
-        Card player2FirstCard;
-        Card player2SecondCard;
-        Card flop1;
-        Card flop2;
-        Card flop3;
-        Card turn;
-        Card river;
+    private static Card player1FirstCard;
+    private static Card player1SecondCard;
+    private static Card player2FirstCard;
+    private static Card player2SecondCard;
+    private static Card flop1;
+    private static Card flop2;
+    private static Card flop3;
+    private static Card turn;
+    private static Card river;
 
 
     @Override
@@ -91,31 +93,18 @@ public class DealerExample implements Dealer {
     @Override
     public PokerResult decideWinner(Board board) {
 
+        noCardsExceptionCheck(board);
 
-
-        if (board.getPlayerOne() == null || board.getPlayerTwo() == null || board.getFlop() == null ||
-                board.getTurn() == null || board.getRiver() == null) {
-            throw new InvalidPokerBoardException(
-                    "- А карты где?");
-        }
-
-
-
+        //Надо закомментить для тестов
+//        if(player1FirstCard ==null || player1SecondCard == null || player2FirstCard ==null || player2SecondCard == null ||
+//                flop1 == null || flop2 == null || flop3 == null || turn == null || river == null){
+            ifTheBoardISAlreadyReadySetCards(board);
+//        }
 
 
 
-
-
-        List<Card> allCardsInGame = new ArrayList<>();
-        allCardsInGame.add(player1FirstCard);
-        allCardsInGame.add(player1SecondCard);
-        allCardsInGame.add(player2FirstCard);
-        allCardsInGame.add(player2SecondCard);
-        allCardsInGame.add(flop1);
-        allCardsInGame.add(flop2);
-        allCardsInGame.add(flop3);
-        allCardsInGame.add(turn);
-        allCardsInGame.add(river);
+        List<Card> allCardsInGame = addAllCardsToList();
+        sameCardsExceptionCheck(allCardsInGame);
 
 
 //            System.out.println(player1FirstCard.toString());
@@ -133,33 +122,11 @@ public class DealerExample implements Dealer {
         System.out.println();
 
 
-        for (int i = 0; i < allCardsInGame.size() - 1; i++) {
-            for (int j = i + 1; j < allCardsInGame.size(); j++) {
-                if (allCardsInGame.get(i).equals(allCardsInGame.get(j)))
-                    throw new InvalidPokerBoardException(
-                            "- Почему карты одинаковые в колоде?");
-            }
-        }
 
 
-        List<Card> player1AndTable = new ArrayList<>();
-        List<Card> player2AndTable = new ArrayList<>();
 
-        player1AndTable.add(player1FirstCard);
-        player1AndTable.add(player1SecondCard);
-        player1AndTable.add(flop1);
-        player1AndTable.add(flop2);
-        player1AndTable.add(flop3);
-        player1AndTable.add(turn);
-        player1AndTable.add(river);
-
-        player2AndTable.add(player2FirstCard);
-        player2AndTable.add(player2SecondCard);
-        player2AndTable.add(flop1);
-        player2AndTable.add(flop2);
-        player2AndTable.add(flop3);
-        player2AndTable.add(turn);
-        player2AndTable.add(river);
+        List<Card> player1AndTable = addAllTOFirstPlayer();
+        List<Card> player2AndTable = addAllTOSecondPlayer();
 
 
 
@@ -370,6 +337,52 @@ public class DealerExample implements Dealer {
         }
 
         return PokerResult.DRAW;
+    }
+
+    public static List<Card> addAllCardsToList(){
+        List<Card> allCardsInGame = new ArrayList<>();
+        allCardsInGame.add(player1FirstCard);
+        allCardsInGame.add(player1SecondCard);
+        allCardsInGame.add(player2FirstCard);
+        allCardsInGame.add(player2SecondCard);
+        allCardsInGame.add(flop1);
+        allCardsInGame.add(flop2);
+        allCardsInGame.add(flop3);
+        allCardsInGame.add(turn);
+        allCardsInGame.add(river);
+
+        return allCardsInGame;
+    }
+    public static List<Card> addAllTOFirstPlayer(){
+        List<Card> firstPlayerAndTable = addAllCardsToList();
+        firstPlayerAndTable.remove(player2FirstCard);
+        firstPlayerAndTable.remove(player2SecondCard);
+
+
+        return firstPlayerAndTable;
+    }
+    public static List<Card> addAllTOSecondPlayer(){
+        List<Card> secondPlayerAndTable = addAllCardsToList();
+        secondPlayerAndTable.remove(player1FirstCard);
+        secondPlayerAndTable.remove(player1SecondCard);
+
+
+
+        return secondPlayerAndTable;
+    }
+    public static void ifTheBoardISAlreadyReadySetCards(Board board){
+
+            List<Card> allCards = Board.addAllCards(board);
+            player1FirstCard=allCards.get(0);
+            player1SecondCard=allCards.get(1);
+            player2FirstCard=allCards.get(2);
+            player2SecondCard=allCards.get(3);
+            flop1=allCards.get(4);
+            flop2=allCards.get(5);
+            flop3=allCards.get(6);
+            turn=allCards.get(7);
+            river=allCards.get(8);
+
     }
 }
 

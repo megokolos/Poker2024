@@ -4,25 +4,27 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CombinationsCheck {
+
+    //Проверка на кикер не нужна
     public static boolean checkFlashRoyal(List<Card> player) {
 
         List<Integer> royalRanks = Arrays.asList(10, 11, 12, 13, 14);
-        // Группируем карты по мастям
+
         Map<String, List<Card>> groupedBySuit = player.stream()
                 .collect(Collectors.groupingBy(Card::getSuit));
 
-        // Проверяем для каждой масти
+
         for (Map.Entry<String, List<Card>> entry : groupedBySuit.entrySet()) {
             List<Card> sameSuitCards = entry.getValue();
-            // Проверяем, есть ли все значения флеш-рояля среди карт одной масти
+
             List<Integer> ranks = sameSuitCards.stream()
                     .map(Card::getRank)
                     .toList();
             if (ranks.containsAll(royalRanks)) {
-                return true; // Найден флеш-рояль
+                return true;
             }
         }
-        return false; // Нет флеш-рояля
+        return false;
     }
 
     //Проверка на кикер не нужна

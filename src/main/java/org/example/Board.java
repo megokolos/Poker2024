@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Покерный стол
  */
@@ -24,6 +27,7 @@ public class Board {
      * Одна карта, открывается после turn
      */
     private final String river;
+
 
     public String getPlayerOne() {
         return playerOne;
@@ -62,5 +66,72 @@ public class Board {
                 ", turn=\"" + turn + '\"' +
                 ", river=\"" + river + '\"' +
                 '}';
+    }
+
+
+
+    public static List<Card> addAllCards(Board board) {
+        List<Card> allCards = new ArrayList<>();
+
+
+        String[] cardStrings = {
+                board.getPlayerOne(),
+                board.getPlayerTwo(),
+                board.getFlop(),
+                board.getTurn(),
+                board.getRiver()
+        };
+
+
+        for (String cardString : cardStrings) {
+            if (cardString != null && !cardString.isEmpty()) {
+                allCards.addAll(parseCards(cardString));
+            }
+        }
+
+        return allCards;
+    }
+
+
+    private static List<Card> parseCards(String cards) {
+        List<Card> cardList = new ArrayList<>();
+        int index = 0;
+
+        while (index < cards.length()) {
+            String rankStr, suit;
+
+
+            if (cards.charAt(index) == '1' && index + 2 < cards.length() && cards.charAt(index + 1) == '0') {
+                rankStr = cards.substring(index, index + 2);
+                suit = String.valueOf(cards.charAt(index + 2));
+                index += 3;
+            } else {
+
+                rankStr = String.valueOf(cards.charAt(index));
+                suit = String.valueOf(cards.charAt(index + 1));
+                index += 2;
+            }
+
+            int rank = parseRank(rankStr);
+
+            cardList.add(new Card(rank, suit));
+        }
+
+        return cardList;
+    }
+
+    private static int parseRank(String rankStr) {
+        switch (rankStr) {
+            case "A":
+                return 14;
+            case "K":
+                return 13;
+            case "Q":
+                return 12;
+            case "J":
+                return 11;
+            default:
+                return Integer.parseInt(rankStr);
+        }
     }
 }
