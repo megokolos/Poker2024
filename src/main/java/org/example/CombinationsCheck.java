@@ -46,24 +46,24 @@ public class CombinationsCheck {
             suitRanks.sort(Integer::compareTo);
 
 
-            if (suitRanks.size() >= 5 && (checkStreet(player)==14))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 14))
                 return 14;
 
-            if (suitRanks.size() >= 5 && (checkStreet(player)==13))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 13))
                 return 13;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==12))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 12))
                 return 12;
-            if (suitRanks.size() >= 5 && (checkStreet(player) ==11))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 11))
                 return 11;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==10))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 10))
                 return 10;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==9))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 9))
                 return 9;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==8))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 8))
                 return 8;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==7))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 7))
                 return 7;
-            if (suitRanks.size() >= 5 && (checkStreet(player)==6))
+            if (suitRanks.size() >= 5 && (checkStreet(player) == 6))
                 return 6;
 
 
@@ -146,7 +146,7 @@ public class CombinationsCheck {
 
         for (int i = 0; i < counter.length; i++) {
             if (counter[i] >= 5) {
-                switch (i){
+                switch (i) {
                     case 0 -> {
                         int[] arrayC = listC.stream()
                                 .mapToInt(Integer::intValue)
@@ -154,7 +154,7 @@ public class CombinationsCheck {
                         Arrays.sort(arrayC);
                         return arrayC;
                     }
-                    case  1 -> {
+                    case 1 -> {
                         int[] arrayD = listD.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
@@ -186,10 +186,9 @@ public class CombinationsCheck {
     public static int checkStreet(List<Card> player) {
 
 
-
         List<Integer> listOfRanks = new ArrayList<>();
 
-        for (int i=0; i<player.size(); i++) {
+        for (int i = 0; i < player.size(); i++) {
             listOfRanks.add(player.get(i).getRank());
         }
         Collections.sort(listOfRanks);
@@ -285,7 +284,7 @@ public class CombinationsCheck {
 
         int[] array = new int[7];
 
-        for(int i=0; i<player.size(); i++){
+        for (int i = 0; i < player.size(); i++) {
             array[i] = player.get(i).getRank();
         }
 
@@ -298,7 +297,7 @@ public class CombinationsCheck {
     public static int determineKicker(List<Card> player, int excludedRank) {
 
         List<Integer> remainingCards = new ArrayList<>();
-        for (int i =0; i < player.size(); i++) {
+        for (int i = 0; i < player.size(); i++) {
             if (player.get(i).getRank() != excludedRank) {
                 remainingCards.add(player.get(i).getRank());
             }
@@ -309,7 +308,7 @@ public class CombinationsCheck {
         return remainingCards.isEmpty() ? 0 : remainingCards.get(0);
     }
 
-    public static List<List<Card>> removeKicker(List<Card> player1, int kiker1, List<Card> player2, int kiker2){
+    public static List<List<Card>> removeKicker(List<Card> player1, int kiker1, List<Card> player2, int kiker2) {
         List<Card> list1 = new ArrayList<>();
         for (Card card : player1) {
             if (card.getRank() != kiker1)
@@ -332,14 +331,14 @@ public class CombinationsCheck {
         return bothPlayersCards;
     }
 
-    public static int[] removeTwoPairs (List<Card> player){
+    public static int[] removeTwoPairs(List<Card> player) {
         List<Integer> list1 = new ArrayList<>();
         for (int i = 0; i < player.size(); i++) {
             if (player.get(i).getRank() != checkTwoPairs(player)[0] && player.get(i).getRank() != checkTwoPairs(player)[1])
                 list1.add(player.get(i).getRank());
         }
 
-        return  list1.stream()
+        return list1.stream()
                 .mapToInt(Integer::intValue)
                 .toArray();
     }

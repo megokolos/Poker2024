@@ -17,7 +17,7 @@ public class DealerExample implements Dealer {
 
     public DealerExample() {
         this.deck = new Deck();
-        }
+    }
 
 
     private static Card player1FirstCard;
@@ -33,18 +33,18 @@ public class DealerExample implements Dealer {
 
     @Override
     public Board dealCardsToPlayers() {
-        player1FirstCard = deck.getDeck().get((int) (Math.random()*52));
+        player1FirstCard = deck.getDeck().get((int) (Math.random() * 52));
         deck.drawCard(player1FirstCard);
-        player1SecondCard = deck.getDeck().get((int) (Math.random()*51));
+        player1SecondCard = deck.getDeck().get((int) (Math.random() * 51));
         deck.drawCard(player1SecondCard);
 
-        player2FirstCard = deck.getDeck().get((int) (Math.random()*50));
+        player2FirstCard = deck.getDeck().get((int) (Math.random() * 50));
         deck.drawCard(player2FirstCard);
-        player2SecondCard = deck.getDeck().get((int) (Math.random()*49));
+        player2SecondCard = deck.getDeck().get((int) (Math.random() * 49));
         deck.drawCard(player2SecondCard);
 
-        String player1 = player1FirstCard.toString()+player1SecondCard.toString();
-        String player2 = player2FirstCard.toString()+player2SecondCard.toString();
+        String player1 = player1FirstCard.toString() + player1SecondCard.toString();
+        String player2 = player2FirstCard.toString() + player2SecondCard.toString();
 
 
         return new Board(player1, player2, null, null, null);
@@ -53,11 +53,11 @@ public class DealerExample implements Dealer {
     @Override
     public Board dealFlop(Board board) {
 
-        flop1 = deck.getDeck().get((int) (Math.random()*48));
+        flop1 = deck.getDeck().get((int) (Math.random() * 48));
         deck.drawCard(flop1);
-        flop2 = deck.getDeck().get((int) (Math.random()*47));
+        flop2 = deck.getDeck().get((int) (Math.random() * 47));
         deck.drawCard(flop2);
-        flop3 = deck.getDeck().get((int) (Math.random()*46));
+        flop3 = deck.getDeck().get((int) (Math.random() * 46));
         deck.drawCard(flop3);
 
         return new Board(board.getPlayerOne(),
@@ -70,7 +70,7 @@ public class DealerExample implements Dealer {
     @Override
     public Board dealTurn(Board board) {
 
-        turn = deck.getDeck().get((int) (Math.random()*45));
+        turn = deck.getDeck().get((int) (Math.random() * 45));
         deck.drawCard(turn);
 
         return new Board(board.getPlayerOne(),
@@ -81,7 +81,7 @@ public class DealerExample implements Dealer {
     @Override
     public Board dealRiver(Board board) {
 
-        river = deck.getDeck().get((int) (Math.random()*44));
+        river = deck.getDeck().get((int) (Math.random() * 44));
         deck.drawCard(river);
 
         return new Board(board.getPlayerOne(),
@@ -98,9 +98,8 @@ public class DealerExample implements Dealer {
         //Надо закомментить для тестов
 //        if(player1FirstCard ==null || player1SecondCard == null || player2FirstCard ==null || player2SecondCard == null ||
 //                flop1 == null || flop2 == null || flop3 == null || turn == null || river == null){
-            ifTheBoardISAlreadyReadySetCards(board);
+        ifTheBoardISAlreadyReadySetCards(board);
 //        }
-
 
 
         List<Card> allCardsInGame = addAllCardsToList();
@@ -122,14 +121,8 @@ public class DealerExample implements Dealer {
         System.out.println();
 
 
-
-
-
         List<Card> player1AndTable = addAllTOFirstPlayer();
         List<Card> player2AndTable = addAllTOSecondPlayer();
-
-
-
 
 
         if (checkFlashRoyal(player1AndTable) && checkFlashRoyal(player2AndTable)) {
@@ -339,7 +332,7 @@ public class DealerExample implements Dealer {
         return PokerResult.DRAW;
     }
 
-    public static List<Card> addAllCardsToList(){
+    public static List<Card> addAllCardsToList() {
         List<Card> allCardsInGame = new ArrayList<>();
         allCardsInGame.add(player1FirstCard);
         allCardsInGame.add(player1SecondCard);
@@ -353,7 +346,8 @@ public class DealerExample implements Dealer {
 
         return allCardsInGame;
     }
-    public static List<Card> addAllTOFirstPlayer(){
+
+    public static List<Card> addAllTOFirstPlayer() {
         List<Card> firstPlayerAndTable = addAllCardsToList();
         firstPlayerAndTable.remove(player2FirstCard);
         firstPlayerAndTable.remove(player2SecondCard);
@@ -361,27 +355,28 @@ public class DealerExample implements Dealer {
 
         return firstPlayerAndTable;
     }
-    public static List<Card> addAllTOSecondPlayer(){
+
+    public static List<Card> addAllTOSecondPlayer() {
         List<Card> secondPlayerAndTable = addAllCardsToList();
         secondPlayerAndTable.remove(player1FirstCard);
         secondPlayerAndTable.remove(player1SecondCard);
 
 
-
         return secondPlayerAndTable;
     }
-    public static void ifTheBoardISAlreadyReadySetCards(Board board){
 
-            List<Card> allCards = Board.addAllCards(board);
-            player1FirstCard=allCards.get(0);
-            player1SecondCard=allCards.get(1);
-            player2FirstCard=allCards.get(2);
-            player2SecondCard=allCards.get(3);
-            flop1=allCards.get(4);
-            flop2=allCards.get(5);
-            flop3=allCards.get(6);
-            turn=allCards.get(7);
-            river=allCards.get(8);
+    public static void ifTheBoardISAlreadyReadySetCards(Board board) {
+
+        List<Card> allCards = Board.addAllCards(board);
+        player1FirstCard = allCards.get(0);
+        player1SecondCard = allCards.get(1);
+        player2FirstCard = allCards.get(2);
+        player2SecondCard = allCards.get(3);
+        flop1 = allCards.get(4);
+        flop2 = allCards.get(5);
+        flop3 = allCards.get(6);
+        turn = allCards.get(7);
+        river = allCards.get(8);
 
     }
 }
