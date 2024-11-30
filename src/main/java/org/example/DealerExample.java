@@ -4,7 +4,7 @@ package org.example;
 import java.util.*;
 
 import static org.example.CombinationsCheck.*;
-import static org.example.ExceptionsValidator.*;
+import static org.example.BoardValidator.*;
 
 
 /**

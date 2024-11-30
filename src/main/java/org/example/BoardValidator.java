@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.List;
 
-public class ExceptionsValidator {
+public class BoardValidator {
 
     public static void noCardsExceptionCheck(Board board) {
         if (board.getPlayerOne() == null || board.getPlayerTwo() == null || board.getFlop() == null ||
