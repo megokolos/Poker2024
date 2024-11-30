@@ -31,6 +31,7 @@ public class CombinationsCheck {
     public static int checkStreetFlash(List<Card> player) {
 
         Map<String, List<Integer>> suitToRanks = new HashMap<>();
+        final int MIN_NUMBER_OF_CARDS_FOR_FLASH = 5;
 
         for (int i = 0; i < player.size(); i++) {
             String suit = player.get(i).getSuit();
@@ -46,24 +47,23 @@ public class CombinationsCheck {
             suitRanks.sort(Integer::compareTo);
 
 
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 14))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 14))
                 return 14;
-
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 13))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 13))
                 return 13;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 12))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 12))
                 return 12;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 11))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 11))
                 return 11;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 10))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 10))
                 return 10;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 9))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 9))
                 return 9;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 8))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 8))
                 return 8;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 7))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 7))
                 return 7;
-            if (suitRanks.size() >= 5 && (checkStreet(player) == 6))
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 6))
                 return 6;
 
 
@@ -99,17 +99,29 @@ public class CombinationsCheck {
         }
         int two = 0;
         int three = 0;
+        List<Integer> listOfPairs = new ArrayList<>();
+        List<Integer> listOfSets = new ArrayList<>();
         for (int i = 0; i < countRanks.length; i++) {
             if (countRanks[i] == 2) {
                 two++;
-                response += i * 2;
+                listOfPairs.add(i);
             }
 
             if (countRanks[i] == 3) {
                 three++;
-                response += i * 3;
+                listOfSets.add(i);
             }
         }
+        if (!listOfPairs.isEmpty())
+        response += listOfPairs.get(listOfPairs.size()-1)*2;
+
+        if(listOfSets.size()==2){
+            response+= listOfSets.get(1)*3;
+            response+= listOfSets.get(0)*2;
+            two++;
+        } else if (listOfSets.size()==1)
+            response+= listOfSets.get(0)*3;
+
         if (three != 0 && two != 0)
             return response;
 
@@ -126,49 +138,57 @@ public class CombinationsCheck {
         List<Integer> listH = new ArrayList<>();
         List<Integer> listS = new ArrayList<>();
 
+        final int MIN_NUMBER_OF_CARDS_FOR_FLASH = 5;
+        final int LIST_C = 0;
+        final int LIST_D = 1;
+        final int LIST_H = 2;
+        final int LIST_S = 3;
+
         int[] counter = new int[4];
 
         for (int i = 0; i < player.size(); i++) {
             if (player.get(i).getSuit().equals("C")) {
-                counter[0] += 1;
+                counter[LIST_C] += 1;
                 listC.add(player.get(i).getRank());
             } else if (player.get(i).getSuit().equals("D")) {
-                counter[1] += 1;
+                counter[LIST_D] += 1;
                 listD.add(player.get(i).getRank());
             } else if (player.get(i).getSuit().equals("H")) {
-                counter[2] += 1;
+                counter[LIST_H] += 1;
                 listH.add(player.get(i).getRank());
             } else if (player.get(i).getSuit().equals("S")) {
-                counter[3] += 1;
+                counter[LIST_S] += 1;
                 listS.add(player.get(i).getRank());
             }
         }
 
+
+
         for (int i = 0; i < counter.length; i++) {
-            if (counter[i] >= 5) {
+            if (counter[i] >= MIN_NUMBER_OF_CARDS_FOR_FLASH) {
                 switch (i) {
-                    case 0 -> {
+                    case LIST_C -> {
                         int[] arrayC = listC.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
                         Arrays.sort(arrayC);
                         return arrayC;
                     }
-                    case 1 -> {
+                    case LIST_D -> {
                         int[] arrayD = listD.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
                         Arrays.sort(arrayD);
                         return arrayD;
                     }
-                    case 2 -> {
+                    case LIST_H -> {
                         int[] arrayH = listH.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();
                         Arrays.sort(arrayH);
                         return arrayH;
                     }
-                    case 3 -> {
+                    case LIST_S -> {
                         int[] arrayS = listS.stream()
                                 .mapToInt(Integer::intValue)
                                 .toArray();

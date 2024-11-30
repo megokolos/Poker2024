@@ -112,6 +112,21 @@ public class Test {
     }
 
     @org.junit.Test
+    public void someFullHouse(){
+        Board board = new Board("3D3S", "4D5H", "KHKSKC", "6H", "6S");
+
+        PokerResult result = dealer.decideWinner(board);
+        Assert.assertEquals(PokerResult.DRAW, result);
+    }
+    @org.junit.Test
+    public void twoSetsButFullHouse(){
+        Board board = new Board("3D3S", "6D6H", "KHKSKC", "3H", "6S");
+
+        PokerResult result = dealer.decideWinner(board);
+        Assert.assertEquals(PokerResult.PLAYER_TWO_WIN, result);
+    }
+
+    @org.junit.Test
     public void exceptionSameCards(){
         Board board = new Board("KDKS", "3D5H", "KH3S6C", "KS", "4S");
 

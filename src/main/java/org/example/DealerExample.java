@@ -4,7 +4,7 @@ package org.example;
 import java.util.*;
 
 import static org.example.CombinationsCheck.*;
-import static org.example.CheckSomeExceptions.*;
+import static org.example.ExceptionsValidator.*;
 
 
 /**
@@ -98,7 +98,7 @@ public class DealerExample implements Dealer {
         //Надо закомментить для тестов
 //        if(player1FirstCard ==null || player1SecondCard == null || player2FirstCard ==null || player2SecondCard == null ||
 //                flop1 == null || flop2 == null || flop3 == null || turn == null || river == null){
-        ifTheBoardISAlreadyReadySetCards(board);
+        doIfTheBoardISAlreadyReadySetCards(board);
 //        }
 
 
@@ -124,13 +124,90 @@ public class DealerExample implements Dealer {
         List<Card> player1AndTable = addAllTOFirstPlayer();
         List<Card> player2AndTable = addAllTOSecondPlayer();
 
+        if(returnCombination(player1AndTable).value>returnCombination(player2AndTable).value)
+            return PokerResult.PLAYER_ONE_WIN;
+        else if (returnCombination(player1AndTable).value<returnCombination(player2AndTable).value)
+            return PokerResult.PLAYER_TWO_WIN;
+        else
+            return checkTheInnerDifference(player1AndTable,player2AndTable);
+    }
+
+    public static List<Card> addAllCardsToList() {
+        List<Card> allCardsInGame = new ArrayList<>();
+        allCardsInGame.add(player1FirstCard);
+        allCardsInGame.add(player1SecondCard);
+        allCardsInGame.add(player2FirstCard);
+        allCardsInGame.add(player2SecondCard);
+        allCardsInGame.add(flop1);
+        allCardsInGame.add(flop2);
+        allCardsInGame.add(flop3);
+        allCardsInGame.add(turn);
+        allCardsInGame.add(river);
+
+        return allCardsInGame;
+    }
+
+    public static List<Card> addAllTOFirstPlayer() {
+        List<Card> firstPlayerAndTable = addAllCardsToList();
+        firstPlayerAndTable.remove(player2FirstCard);
+        firstPlayerAndTable.remove(player2SecondCard);
+
+
+        return firstPlayerAndTable;
+    }
+
+    public static List<Card> addAllTOSecondPlayer() {
+        List<Card> secondPlayerAndTable = addAllCardsToList();
+        secondPlayerAndTable.remove(player1FirstCard);
+        secondPlayerAndTable.remove(player1SecondCard);
+
+
+        return secondPlayerAndTable;
+    }
+
+    public static void doIfTheBoardISAlreadyReadySetCards(Board board) {
+
+        List<Card> allCards = Board.addAllCards(board);
+        player1FirstCard = allCards.get(0);
+        player1SecondCard = allCards.get(1);
+        player2FirstCard = allCards.get(2);
+        player2SecondCard = allCards.get(3);
+        flop1 = allCards.get(4);
+        flop2 = allCards.get(5);
+        flop3 = allCards.get(6);
+        turn = allCards.get(7);
+        river = allCards.get(8);
+
+    }
+
+    public static Combinations returnCombination (List<Card> playerCards){
+
+        if(checkFlashRoyal(playerCards))
+            return Combinations.ROYAL_FLASH;
+        else if (checkStreetFlash(playerCards)!=0)
+            return Combinations.STREET_FLASH;
+        else if (checkFourOfAKind(playerCards)!=0)
+            return Combinations.QUAD;
+        else if (checkFullHouse(playerCards)!=0)
+            return Combinations.FULL_HOUSE;
+        else if (checkFlash(playerCards).length!=0)
+            return Combinations.FLASH;
+        else if (checkStreet(playerCards)!=0)
+            return Combinations.STREET;
+        else if (checkSet(playerCards)!=0)
+            return Combinations.SET;
+        else if (checkTwoPairs(playerCards)[0]!=0)
+            return Combinations.TWO_PAIRS;
+        else if (checkPair(playerCards)!=0)
+            return Combinations.PAIR;
+        else
+            return Combinations.ELDER_CARD;
+    }
+
+    public static PokerResult checkTheInnerDifference(List<Card> player1AndTable, List<Card> player2AndTable){
 
         if (checkFlashRoyal(player1AndTable) && checkFlashRoyal(player2AndTable)) {
             return PokerResult.DRAW;
-        } else if (checkFlashRoyal(player1AndTable)) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (checkFlashRoyal(player2AndTable)) {
-            return PokerResult.PLAYER_TWO_WIN;
         } else if (checkStreetFlash(player1AndTable) != 0 &&
                 checkStreetFlash(player2AndTable) != 0 &&
                 checkStreetFlash(player1AndTable) == checkStreetFlash(player2AndTable)) {
@@ -155,10 +232,6 @@ public class DealerExample implements Dealer {
                 return PokerResult.PLAYER_ONE_WIN;
             else
                 return PokerResult.PLAYER_TWO_WIN;
-        } else if (checkFourOfAKind(player1AndTable) != 0 && checkFourOfAKind(player2AndTable) == 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (checkFourOfAKind(player1AndTable) == 0 && checkFourOfAKind(player2AndTable) != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
         } else if (checkFullHouse(player1AndTable) == checkFullHouse(player2AndTable) && checkFullHouse(player1AndTable) != 0 && checkFullHouse(player2AndTable) != 0) {
             return PokerResult.DRAW;
         } else if (checkFullHouse(player1AndTable) > checkFullHouse(player2AndTable)) {
@@ -175,12 +248,6 @@ public class DealerExample implements Dealer {
                     return PokerResult.PLAYER_TWO_WIN;
             }
             return PokerResult.DRAW;
-        } else if (checkFlash(player1AndTable).length != 0 &&
-                checkFlash(player2AndTable).length == 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if (checkFlash(player1AndTable).length == 0 &&
-                checkFlash(player2AndTable).length != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
         } else if (checkStreet(player1AndTable) == checkStreet(player2AndTable) &&
                 checkStreet(player1AndTable) != 0 && checkStreet(player2AndTable) != 0) {
             return PokerResult.DRAW;
@@ -251,12 +318,6 @@ public class DealerExample implements Dealer {
                 checkTwoPairs(player1AndTable)[1] < checkTwoPairs(player2AndTable)[1] &&
                 checkTwoPairs(player1AndTable)[0] != 0 && checkTwoPairs(player2AndTable)[0] != 0 &&
                 checkTwoPairs(player1AndTable)[1] != 0 && checkTwoPairs(player2AndTable)[1] != 0) {
-            return PokerResult.PLAYER_TWO_WIN;
-        } else if ((checkTwoPairs(player1AndTable)[0] == 0 || checkTwoPairs(player2AndTable)[1] == 0) &&
-                checkTwoPairs(player1AndTable)[0] != 0 && checkTwoPairs(player1AndTable)[1] != 0) {
-            return PokerResult.PLAYER_ONE_WIN;
-        } else if ((checkTwoPairs(player1AndTable)[0] == 0 || checkTwoPairs(player1AndTable)[1] == 0) &&
-                checkTwoPairs(player2AndTable)[0] != 0 && checkTwoPairs(player2AndTable)[1] != 0) {
             return PokerResult.PLAYER_TWO_WIN;
         } else if (checkPair(player1AndTable) == checkPair(player2AndTable) &&
                 checkPair(player1AndTable) != 0 && checkPair(player2AndTable) != 0) {
@@ -332,52 +393,5 @@ public class DealerExample implements Dealer {
         return PokerResult.DRAW;
     }
 
-    public static List<Card> addAllCardsToList() {
-        List<Card> allCardsInGame = new ArrayList<>();
-        allCardsInGame.add(player1FirstCard);
-        allCardsInGame.add(player1SecondCard);
-        allCardsInGame.add(player2FirstCard);
-        allCardsInGame.add(player2SecondCard);
-        allCardsInGame.add(flop1);
-        allCardsInGame.add(flop2);
-        allCardsInGame.add(flop3);
-        allCardsInGame.add(turn);
-        allCardsInGame.add(river);
-
-        return allCardsInGame;
-    }
-
-    public static List<Card> addAllTOFirstPlayer() {
-        List<Card> firstPlayerAndTable = addAllCardsToList();
-        firstPlayerAndTable.remove(player2FirstCard);
-        firstPlayerAndTable.remove(player2SecondCard);
-
-
-        return firstPlayerAndTable;
-    }
-
-    public static List<Card> addAllTOSecondPlayer() {
-        List<Card> secondPlayerAndTable = addAllCardsToList();
-        secondPlayerAndTable.remove(player1FirstCard);
-        secondPlayerAndTable.remove(player1SecondCard);
-
-
-        return secondPlayerAndTable;
-    }
-
-    public static void ifTheBoardISAlreadyReadySetCards(Board board) {
-
-        List<Card> allCards = Board.addAllCards(board);
-        player1FirstCard = allCards.get(0);
-        player1SecondCard = allCards.get(1);
-        player2FirstCard = allCards.get(2);
-        player2SecondCard = allCards.get(3);
-        flop1 = allCards.get(4);
-        flop2 = allCards.get(5);
-        flop3 = allCards.get(6);
-        turn = allCards.get(7);
-        river = allCards.get(8);
-
-    }
 }
 
