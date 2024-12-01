@@ -24,7 +24,7 @@ public class CombinationsCheck {
     //Проверка на кикер не нужна
     public static boolean checkFlashRoyal(List<Card> player) {
 
-        List<Integer> royalRanks = Arrays.asList(10, 11, 12, 13, 14);
+        List<Integer> royalRanks = Arrays.asList(TEN, JACK, QUEEN, KING, ACE);
 
         Map<String, List<Card>> groupedBySuit = player.stream()
                 .collect(Collectors.groupingBy(Card::getSuit));
@@ -97,7 +97,7 @@ public class CombinationsCheck {
         }
 
         for (int i = 0; i < countRanks.length; i++) {
-            if (countRanks[i] == 4)
+            if (countRanks[i] == FOUR)
                 return i;
         }
 
@@ -118,12 +118,12 @@ public class CombinationsCheck {
         List<Integer> listOfPairs = new ArrayList<>();
         List<Integer> listOfSets = new ArrayList<>();
         for (int i = 0; i < countRanks.length; i++) {
-            if (countRanks[i] == 2) {
+            if (countRanks[i] == TWO) {
                 two++;
                 listOfPairs.add(i);
             }
 
-            if (countRanks[i] == 3) {
+            if (countRanks[i] == THREE) {
                 three++;
                 listOfSets.add(i);
             }
@@ -221,10 +221,6 @@ public class CombinationsCheck {
     //Проверка на кикер не нужна
     public static int checkStreet(List<Card> player) {
 
-
-
-
-
         List<Integer> listOfRanks = new ArrayList<>();
 
         for (int i = 0; i < player.size(); i++) {
@@ -259,6 +255,7 @@ public class CombinationsCheck {
     public static int checkSet(List<Card> player) {
 
 
+
         int[] countRanks = new int[15];
 
         for (int i = 0; i < player.size(); i++) {
@@ -266,7 +263,7 @@ public class CombinationsCheck {
         }
 
         for (int i = 0; i < countRanks.length; i++) {
-            if (countRanks[i] == 3)
+            if (countRanks[i] == THREE)
                 return i;
         }
 
@@ -288,7 +285,7 @@ public class CombinationsCheck {
         List<Integer> list = new ArrayList<>();
 
         for (int i = countRanks.length - 1; i > 0; i--) {
-            if (countRanks[i] == 2) {
+            if (countRanks[i] == TWO) {
                 list.add(i);
             }
         }
@@ -311,7 +308,7 @@ public class CombinationsCheck {
         }
 
         for (int i = 0; i < countRanks.length; i++) {
-            if (countRanks[i] == 2)
+            if (countRanks[i] == TWO)
                 return i;
         }
 
