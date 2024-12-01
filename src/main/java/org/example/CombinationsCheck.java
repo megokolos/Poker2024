@@ -5,6 +5,22 @@ import java.util.stream.Collectors;
 
 public class CombinationsCheck {
 
+
+    final static int ACE =14;
+    final static int KING =13;
+    final static int QUEEN =12;
+    final static int JACK =11;
+    final static int TEN =10;
+    final static int NINE =9;
+    final static int EIGHT =8;
+    final static int SEVEN =7;
+    final static int SIX =6;
+    final static int FIVE =5;
+    final static int FOUR =4;
+    final static int THREE =3;
+    final static int TWO =2;
+
+
     //Проверка на кикер не нужна
     public static boolean checkFlashRoyal(List<Card> player) {
 
@@ -47,24 +63,24 @@ public class CombinationsCheck {
             suitRanks.sort(Integer::compareTo);
 
 
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 14))
-                return 14;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 13))
-                return 13;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 12))
-                return 12;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 11))
-                return 11;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 10))
-                return 10;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 9))
-                return 9;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 8))
-                return 8;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 7))
-                return 7;
-            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == 6))
-                return 6;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == ACE))
+                return ACE;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == KING))
+                return KING;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == QUEEN))
+                return QUEEN;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == JACK))
+                return JACK;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == TEN))
+                return TEN;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == NINE))
+                return NINE;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == EIGHT))
+                return EIGHT;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == SEVEN))
+                return SEVEN;
+            if (suitRanks.size() >= MIN_NUMBER_OF_CARDS_FOR_FLASH && (checkStreet(player) == SIX))
+                return SIX;
 
 
         }
@@ -206,6 +222,9 @@ public class CombinationsCheck {
     public static int checkStreet(List<Card> player) {
 
 
+
+
+
         List<Integer> listOfRanks = new ArrayList<>();
 
         for (int i = 0; i < player.size(); i++) {
@@ -214,24 +233,24 @@ public class CombinationsCheck {
         Collections.sort(listOfRanks);
 
 
-        if (listOfRanks.containsAll(Arrays.asList(10, 11, 12, 13, 14)))
-            return 14;
-        if (listOfRanks.containsAll(Arrays.asList(9, 10, 11, 12, 13)))
-            return 13;
-        if (listOfRanks.containsAll(Arrays.asList(8, 9, 10, 11, 12)))
-            return 12;
-        if (listOfRanks.containsAll(Arrays.asList(7, 8, 9, 10, 11)))
-            return 11;
-        if (listOfRanks.containsAll(Arrays.asList(6, 7, 8, 9, 10)))
-            return 10;
-        if (listOfRanks.containsAll(Arrays.asList(5, 6, 7, 8, 9)))
-            return 9;
-        if (listOfRanks.containsAll(Arrays.asList(4, 5, 6, 7, 8)))
-            return 8;
-        if (listOfRanks.containsAll(Arrays.asList(3, 4, 5, 6, 7)))
-            return 7;
-        if (listOfRanks.containsAll(Arrays.asList(2, 3, 4, 5, 6)))
-            return 6;
+        if (listOfRanks.containsAll(Arrays.asList(TEN, JACK, QUEEN, KING, ACE)))
+            return ACE;
+        if (listOfRanks.containsAll(Arrays.asList(NINE, TEN, JACK, QUEEN, KING)))
+            return KING;
+        if (listOfRanks.containsAll(Arrays.asList(EIGHT, NINE, TEN, JACK, QUEEN)))
+            return QUEEN;
+        if (listOfRanks.containsAll(Arrays.asList(SEVEN, EIGHT, NINE, TEN, JACK)))
+            return JACK;
+        if (listOfRanks.containsAll(Arrays.asList(SIX, SEVEN, EIGHT, NINE, TEN)))
+            return TEN;
+        if (listOfRanks.containsAll(Arrays.asList(FIVE, SIX, SEVEN, EIGHT, NINE)))
+            return NINE;
+        if (listOfRanks.containsAll(Arrays.asList(FOUR, FIVE, SIX, SEVEN, EIGHT)))
+            return EIGHT;
+        if (listOfRanks.containsAll(Arrays.asList(THREE, FOUR, FIVE, SIX, SEVEN)))
+            return SEVEN;
+        if (listOfRanks.containsAll(Arrays.asList(TWO, THREE, FOUR, FIVE, SIX)))
+            return SIX;
 
         return 0;
     }
