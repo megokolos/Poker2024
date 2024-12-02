@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class CombinationsCheck {
 
-
+    final static int MAX_ARRAY_SIZE_FOR_ALL_CARDS =15;
     final static int ACE =14;
     final static int KING =13;
     final static int QUEEN =12;
@@ -90,7 +90,7 @@ public class CombinationsCheck {
     //Проверка на кикер нужна
     public static int checkFourOfAKind(List<Card> player) {
 
-        int[] countRanks = new int[15];
+        int[] countRanks = new int[MAX_ARRAY_SIZE_FOR_ALL_CARDS];
 
         for (int i = 0; i < player.size(); i++) {
             countRanks[player.get(i).getRank()] += 1;
@@ -107,7 +107,7 @@ public class CombinationsCheck {
     //Проверка на кикер не нужна
     public static int checkFullHouse(List<Card> player) {
 
-        int[] countRanks = new int[15];
+        int[] countRanks = new int[MAX_ARRAY_SIZE_FOR_ALL_CARDS];
         int response = 0;
 
         for (int i = 0; i < player.size(); i++) {
@@ -256,7 +256,7 @@ public class CombinationsCheck {
 
 
 
-        int[] countRanks = new int[15];
+        int[] countRanks = new int[MAX_ARRAY_SIZE_FOR_ALL_CARDS];
 
         for (int i = 0; i < player.size(); i++) {
             countRanks[player.get(i).getRank()] += 1;
@@ -274,7 +274,7 @@ public class CombinationsCheck {
     public static int[] checkTwoPairs(List<Card> player) {
 
 
-        int[] countRanks = new int[15];
+        int[] countRanks = new int[MAX_ARRAY_SIZE_FOR_ALL_CARDS];
 
         int[] response = new int[2];
 
@@ -301,7 +301,7 @@ public class CombinationsCheck {
     public static int checkPair(List<Card> player) {
 
 
-        int[] countRanks = new int[15];
+        int[] countRanks = new int[MAX_ARRAY_SIZE_FOR_ALL_CARDS];
 
         for (int i = 0; i < player.size(); i++) {
             countRanks[player.get(i).getRank()] += 1;
