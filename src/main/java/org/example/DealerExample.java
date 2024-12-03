@@ -3,8 +3,10 @@ package org.example;
 
 import java.util.*;
 
+import static org.example.Combinations.checkTheInnerDifference;
 import static org.example.CombinationsCheck.*;
 import static org.example.BoardValidator.*;
+
 
 
 /**
@@ -124,12 +126,15 @@ public class DealerExample implements Dealer {
         List<Card> player1AndTable = addAllTOFirstPlayer();
         List<Card> player2AndTable = addAllTOSecondPlayer();
 
-        if (returnCombination(player1AndTable).value > returnCombination(player2AndTable).value)
+        Combinations firstPlayerCombination = returnCombination(player1AndTable);
+        Combinations secondPlayerCombination = returnCombination(player2AndTable);
+
+        if (firstPlayerCombination.value > secondPlayerCombination.value)
             return PokerResult.PLAYER_ONE_WIN;
-        else if (returnCombination(player1AndTable).value < returnCombination(player2AndTable).value)
+        else if (firstPlayerCombination.value < secondPlayerCombination.value)
             return PokerResult.PLAYER_TWO_WIN;
         else
-            return checkTheInnerDifference(player1AndTable, player2AndTable);
+            return checkTheInnerDifference(firstPlayerCombination, player1AndTable, player2AndTable);
     }
 
     public static List<Card> addAllCardsToList() {
@@ -202,191 +207,6 @@ public class DealerExample implements Dealer {
             return Combinations.PAIR;
         else
             return Combinations.ELDER_CARD;
-    }
-
-    public static PokerResult checkTheInnerDifference(List<Card> player1AndTable, List<Card> player2AndTable) {
-
-
-        switch (returnCombination(player1AndTable)) {
-            case ROYAL_FLASH -> {
-                return PokerResult.DRAW;
-            }
-            case STREET_FLASH -> {
-                if (checkStreetFlash(player1AndTable) == checkStreetFlash(player2AndTable))
-                    return PokerResult.DRAW;
-                else if (checkStreetFlash(player1AndTable) > checkStreetFlash(player2AndTable))
-                    return PokerResult.PLAYER_ONE_WIN;
-                else
-                    return PokerResult.PLAYER_TWO_WIN;
-            }
-            case QUAD -> {
-                if (checkFourOfAKind(player1AndTable) == checkFourOfAKind(player2AndTable)) {
-                    int kiker1 = determineKicker(player1AndTable, checkFourOfAKind(player1AndTable));
-                    int kiker2 = determineKicker(player2AndTable, checkFourOfAKind(player2AndTable));
-
-                    if (kiker1 == kiker2)
-                        return PokerResult.DRAW;
-                    else if (kiker1 > kiker2)
-                        return PokerResult.PLAYER_ONE_WIN;
-                    else
-                        return PokerResult.PLAYER_TWO_WIN;
-                } else if (checkFourOfAKind(player1AndTable) > checkFourOfAKind(player2AndTable))
-                    return PokerResult.PLAYER_ONE_WIN;
-                else
-                    return PokerResult.PLAYER_TWO_WIN;
-            }
-            case FULL_HOUSE -> {
-                if (checkFullHouse(player1AndTable) == checkFullHouse(player2AndTable))
-                    return PokerResult.DRAW;
-                else if (checkFullHouse(player1AndTable) > checkFullHouse(player2AndTable))
-                    return PokerResult.PLAYER_ONE_WIN;
-                else
-                    return PokerResult.PLAYER_TWO_WIN;
-            }
-            case FLASH -> {
-                for (int i = 0; i < 5; i++) {
-                    if (checkFlash(player1AndTable)[checkFlash(player1AndTable).length - 1 - i] > checkFlash(player2AndTable)[checkFlash(player2AndTable).length - 1 - i])
-                        return PokerResult.PLAYER_ONE_WIN;
-                    if (checkFlash(player1AndTable)[checkFlash(player1AndTable).length - 1 - i] < checkFlash(player2AndTable)[checkFlash(player2AndTable).length - 1 - i])
-                        return PokerResult.PLAYER_TWO_WIN;
-                }
-                return PokerResult.DRAW;
-            }
-            case STREET -> {
-                if (checkStreet(player1AndTable) == checkStreet(player2AndTable))
-                    return PokerResult.DRAW;
-                else if (checkStreet(player1AndTable) > checkStreet(player2AndTable))
-                    return PokerResult.PLAYER_ONE_WIN;
-                else
-                    return PokerResult.PLAYER_TWO_WIN;
-            }
-            case SET -> {
-                if (checkSet(player1AndTable) == checkSet(player2AndTable)) {
-                    int kiker1 = determineKicker(player1AndTable, checkSet(player1AndTable));
-                    int kiker2 = determineKicker(player2AndTable, checkSet(player2AndTable));
-
-                    if (kiker1 == kiker2) {
-
-                        if (determineKicker(removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(0), checkSet(player1AndTable)) == determineKicker(removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(1), checkSet(player2AndTable)))
-                            return PokerResult.DRAW;
-                        else if (determineKicker(removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(0), checkSet(player1AndTable)) > determineKicker(removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(1), checkSet(player2AndTable))) {
-                            return PokerResult.PLAYER_ONE_WIN;
-                        } else
-                            return PokerResult.PLAYER_TWO_WIN;
-
-
-                    } else if (kiker1 > kiker2) {
-                        return PokerResult.PLAYER_ONE_WIN;
-                    } else {
-                        return PokerResult.PLAYER_TWO_WIN;
-                    }
-
-                } else if (checkSet(player1AndTable) > checkSet(player2AndTable)) {
-                    return PokerResult.PLAYER_ONE_WIN;
-                } else if (checkSet(player1AndTable) < checkSet(player2AndTable)) {
-                    return PokerResult.PLAYER_TWO_WIN;
-                }
-            }
-            case TWO_PAIRS -> {
-                if (checkTwoPairs(player1AndTable)[0] > checkTwoPairs(player2AndTable)[0]) {
-                    return PokerResult.PLAYER_ONE_WIN;
-                } else if (checkTwoPairs(player1AndTable)[0] < checkTwoPairs(player2AndTable)[0]) {
-                    return PokerResult.PLAYER_TWO_WIN;
-                } else if (checkTwoPairs(player1AndTable)[0] == checkTwoPairs(player2AndTable)[0] &&
-                        checkTwoPairs(player1AndTable)[1] == checkTwoPairs(player2AndTable)[1]) {
-
-                    int[] withoutPairs1 = removeTwoPairs(player1AndTable);
-                    int[] withoutPairs2 = removeTwoPairs(player2AndTable);
-
-                    Arrays.sort(withoutPairs1);
-                    Arrays.sort(withoutPairs2);
-
-
-                    if (withoutPairs1[withoutPairs1.length - 1] == withoutPairs2[withoutPairs2.length - 1])
-                        return PokerResult.DRAW;
-                    else if (withoutPairs1[withoutPairs1.length - 1] > withoutPairs2[withoutPairs2.length - 1])
-                        return PokerResult.PLAYER_ONE_WIN;
-                    else
-                        return PokerResult.PLAYER_TWO_WIN;
-                } else if (checkTwoPairs(player1AndTable)[0] == checkTwoPairs(player2AndTable)[0] &&
-                        checkTwoPairs(player1AndTable)[1] > checkTwoPairs(player2AndTable)[1]) {
-                    return PokerResult.PLAYER_ONE_WIN;
-                } else if (checkTwoPairs(player1AndTable)[0] == checkTwoPairs(player2AndTable)[0] &&
-                        checkTwoPairs(player1AndTable)[1] < checkTwoPairs(player2AndTable)[1]) {
-                    return PokerResult.PLAYER_TWO_WIN;
-                }
-            }
-            case PAIR -> {
-                if (checkPair(player1AndTable) == checkPair(player2AndTable)) {
-
-
-                    int kiker1 = determineKicker(player1AndTable, checkPair(player1AndTable));
-                    int kiker2 = determineKicker(player2AndTable, checkPair(player2AndTable));
-
-                    if (kiker1 == kiker2) {
-
-                        List<Card> withoutkiker1 = removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(0);
-
-                        List<Card> withoutkiker2 = removeKicker(player1AndTable, kiker1, player2AndTable, kiker2).get(1);
-
-                        if (determineKicker(withoutkiker1, checkPair(player1AndTable)) == determineKicker(withoutkiker2, checkPair(player2AndTable))) {
-
-
-                            int kiker21 = determineKicker(withoutkiker1, checkPair(player1AndTable));
-                            int kiker22 = determineKicker(withoutkiker2, checkPair(player2AndTable));
-
-
-                            if (kiker21 == kiker22) {
-
-
-                                List<Card> withoutkiker21 = removeKicker(withoutkiker1, kiker21, withoutkiker2, kiker22).get(0);
-
-                                List<Card> withoutkiker22 = removeKicker(withoutkiker1, kiker21, withoutkiker2, kiker22).get(1);
-
-                                if (determineKicker(withoutkiker21, checkPair(player1AndTable)) == determineKicker(withoutkiker22, checkPair(player2AndTable))) {
-                                    return PokerResult.DRAW;
-                                } else if (determineKicker(withoutkiker21, checkPair(player1AndTable)) > determineKicker(withoutkiker22, checkPair(player2AndTable)))
-                                    return PokerResult.PLAYER_ONE_WIN;
-                                else
-                                    return PokerResult.PLAYER_TWO_WIN;
-
-                            }
-                            if (kiker21 > kiker22)
-                                return PokerResult.PLAYER_ONE_WIN;
-                            else
-                                return PokerResult.PLAYER_TWO_WIN;
-
-
-                        } else if (determineKicker(withoutkiker1, checkPair(player1AndTable)) > determineKicker(withoutkiker2, checkPair(player2AndTable))) {
-                            return PokerResult.PLAYER_ONE_WIN;
-                        } else
-                            return PokerResult.PLAYER_TWO_WIN;
-
-
-                    } else if (kiker1 > kiker2) {
-                        return PokerResult.PLAYER_ONE_WIN;
-                    } else
-                        return PokerResult.PLAYER_TWO_WIN;
-                } else if (checkPair(player1AndTable) > checkPair(player2AndTable))
-                    return PokerResult.PLAYER_ONE_WIN;
-                else if (checkPair(player1AndTable) < checkPair(player2AndTable))
-                    return PokerResult.PLAYER_TWO_WIN;
-            }
-            case ELDER_CARD -> {
-                int[] sortedArray1 = checkElderRank(player1AndTable);
-                int[] sortedArray2 = checkElderRank(player2AndTable);
-
-                for (int i = sortedArray1.length - 1; i > 1; i--) {
-                    if (sortedArray1[i] == sortedArray2[i])
-                        continue;
-                    else if (sortedArray1[i] > sortedArray2[i])
-                        return PokerResult.PLAYER_ONE_WIN;
-                    else
-                        return PokerResult.PLAYER_TWO_WIN;
-                }
-            }
-        }
-        return PokerResult.DRAW;
     }
 }
 
